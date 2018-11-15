@@ -36,21 +36,30 @@ bool UEtherlinkerFunctionLibrary::StartIntegrationServer()
 	FString ContentPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir());
 	FString Command;
 
+#if PLATFORM_WINDOWS
 	if (EtherlinkerSettings->RunIntegrationServerSilently) {
 		Command = "javaw";
 	}
 	else {
 		Command = "java";
 	}
+#elif PLATFORM_MAC
+	Command = "/usr/bin/java";
+#endif
+
 	FString Args = EtherlinkerSettings->IntegrationServerParameters.TrimStartAndEnd() + " -jar " + "\"" + ContentPath + "IntegrationServer/stratum-1.0.war\"";
 	uint32 ProcessId = 0;
 
+#if PLATFORM_WINDOWS
 	if (EtherlinkerSettings->RunIntegrationServerSilently) {
 		UEtherlinkerFunctionLibrary::ProcessHandle = FPlatformProcess::CreateProc(*Command, *Args, false, false, true, &ProcessId, 0, nullptr, nullptr);
 	}
 	else {
 		UEtherlinkerFunctionLibrary::ProcessHandle = FPlatformProcess::CreateProc(*Command, *Args, false, true, false, &ProcessId, 0, nullptr, nullptr);
 	}
+#elif PLATFORM_MAC
+	UEtherlinkerFunctionLibrary::ProcessHandle = FPlatformProcess::CreateProc(*Command, *Args, false, true, false, &ProcessId, 0, nullptr, nullptr);
+#endif
 
 	UE_LOG(LogTemp, Warning, TEXT("Args: %s"), *Args);
 	UE_LOG(LogTemp, Warning, TEXT("Process Id: %d"), ProcessId);
@@ -195,8 +204,14 @@ bool UEtherlinkerFunctionLibrary::CompileContracts()
 	
 	// Step 3: Compile contracts with Web3j
 
-	//#TODO: Test on Linux
-	FString Command = "\"\"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileContractsScript + "\" \"" + IntegrationServerSourceDirectory + "\"\"";
+	FString Command;
+
+#if PLATFORM_WINDOWS
+	Command = "\"\"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileContractsScript + "\" \"" + IntegrationServerSourceDirectory + "\"\"";
+#elif PLATFORM_MAC
+	Command = "bash \"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileContractsScript + "\" \"" + IntegrationServerSourceDirectory + "\"";
+#endif
+
 	UE_LOG(LogTemp, Warning, TEXT("Compile contracts command: %s"), *Command)
 
 	auto Conv = StringCast<ANSICHAR>(*Command);
@@ -217,8 +232,6 @@ bool UEtherlinkerFunctionLibrary::CompileContracts()
 bool UEtherlinkerFunctionLibrary::CompileIntegrationServer()
 {
 
-	//#TODO: Test on Linux
-
 	// Step 1: Compile IntegrationServer
 	if (!StopIntegrationServer()) {
 		UE_LOG(LogTemp, Warning, TEXT("Failed to stop integration server"));
@@ -230,8 +243,14 @@ bool UEtherlinkerFunctionLibrary::CompileIntegrationServer()
 	FPaths::NormalizeDirectoryName(IntegrationServerSourceDirectory);
 
 	FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
+	FString Command;
 
-	FString Command = "\"\"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileIntegrationServerScript + "\" \"" + IntegrationServerSourceDirectory + "\"\"";
+#if PLATFORM_WINDOWS
+	Command = "\"\"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileIntegrationServerScript + "\" \"" + IntegrationServerSourceDirectory + "\"\"";
+#elif PLATFORM_MAC
+	Command = "bash \"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileIntegrationServerScript + "\" \"" + IntegrationServerSourceDirectory + "\"";
+#endif
+
 	UE_LOG(LogTemp, Warning, TEXT("Compile integration server command: %s"), *Command);
 
 	auto Conv = StringCast<ANSICHAR>(*Command);
