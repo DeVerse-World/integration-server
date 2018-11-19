@@ -48,6 +48,22 @@ contract PremiumSubscriptionToken is ERC20Burnable, Ownable, StringUtils {
     }
 
     /**
+     * @dev Add new premium subscription types in batch
+     * @param _premiumSubscriptionTypeIds Ids of the new subscription types
+     * @param _premiumSubscriptionPricesPerDay Prices per day of the new subscription types
+     */
+    function batchAddPremiumSubscriptionTypes(uint256[] _premiumSubscriptionTypeIds, uint256[] _premiumSubscriptionPricesPerDay) external onlyOwner {
+
+        require(_premiumSubscriptionTypeIds.length == _premiumSubscriptionPricesPerDay.length);
+
+        for (uint i=0; i<_premiumSubscriptionTypeIds.length; i++) {
+            PremiumSubscriptionType memory premiumSubscriptionType = PremiumSubscriptionType(_premiumSubscriptionTypeIds[i], _premiumSubscriptionPricesPerDay[i]);
+            premiumSubscriptionTypes[_premiumSubscriptionTypeIds[i]] = premiumSubscriptionType;
+            emit AddPremiumSubscriptionTypeEvent(_premiumSubscriptionTypeIds[i]);
+        }
+    }
+
+    /**
      * @dev Edit existing premium subscription type
      * @param _premiumSubscriptionTypeId Id of the existing subscription type
      * @param _premiumSubscriptionPricePerDay Price per day of the existing subscription type to change
@@ -59,12 +75,39 @@ contract PremiumSubscriptionToken is ERC20Burnable, Ownable, StringUtils {
     }
 
     /**
+     * @dev Edit existing premium subscription types in batch
+     * @param _premiumSubscriptionTypeIds Ids of the existing subscription types
+     * @param _premiumSubscriptionPricesPerDay Prices per day of the existing subscription types to change
+     */
+    function batchEditPremiumSubscriptionTypes(uint256[] _premiumSubscriptionTypeIds, uint256[] _premiumSubscriptionPricesPerDay) external onlyOwner {
+
+        require(_premiumSubscriptionTypeIds.length == _premiumSubscriptionPricesPerDay.length);
+
+        for (uint i=0; i<_premiumSubscriptionTypeIds.length; i++) {
+            PremiumSubscriptionType memory premiumSubscriptionType = PremiumSubscriptionType(_premiumSubscriptionTypeIds[i], _premiumSubscriptionPricesPerDay[i]);
+            premiumSubscriptionTypes[_premiumSubscriptionTypeIds[i]] = premiumSubscriptionType;
+            emit EditPremiumSubscriptionTypeEvent(_premiumSubscriptionTypeIds[i]);
+        }
+    }
+
+    /**
      * @dev Delete existing premium subscription type
      * @param _premiumSubscriptionTypeId Id of the existing subscription type
      */
     function deletePremiumSubscriptionType(uint256 _premiumSubscriptionTypeId) external onlyOwner {
         delete premiumSubscriptionTypes[_premiumSubscriptionTypeId];
         emit DeletePremiumSubscriptionTypeEvent(_premiumSubscriptionTypeId);
+    }
+
+    /**
+     * @dev Delete existing premium subscription types in batch
+     * @param _premiumSubscriptionTypeIds Ids of the existing subscription types
+     */
+    function batchDeletePremiumSubscriptionTypes(uint256[] _premiumSubscriptionTypeIds) external onlyOwner {
+        for (uint i=0; i<_premiumSubscriptionTypeIds.length; i++) {
+            delete premiumSubscriptionTypes[_premiumSubscriptionTypeIds[i]];
+            emit DeletePremiumSubscriptionTypeEvent(_premiumSubscriptionTypeIds[i]);
+        }
     }
 
     /**

@@ -57,7 +57,7 @@ bool UEtherlinkerFunctionLibrary::StartIntegrationServer()
 	else {
 		UEtherlinkerFunctionLibrary::ProcessHandle = FPlatformProcess::CreateProc(*Command, *Args, false, true, false, &ProcessId, 0, nullptr, nullptr);
 	}
-#elif PLATFORM_MAC
+#elif PLATFORM_MAC || PLATFORM_LINUX
 	UEtherlinkerFunctionLibrary::ProcessHandle = FPlatformProcess::CreateProc(*Command, *Args, false, true, false, &ProcessId, 0, nullptr, nullptr);
 #endif
 
@@ -208,7 +208,7 @@ bool UEtherlinkerFunctionLibrary::CompileContracts()
 
 #if PLATFORM_WINDOWS
 	Command = "\"\"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileContractsScript + "\" \"" + IntegrationServerSourceDirectory + "\"\"";
-#elif PLATFORM_MAC
+#elif PLATFORM_MAC || PLATFORM_LINUX
 	Command = "bash \"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileContractsScript + "\" \"" + IntegrationServerSourceDirectory + "\"";
 #endif
 
@@ -247,7 +247,7 @@ bool UEtherlinkerFunctionLibrary::CompileIntegrationServer()
 
 #if PLATFORM_WINDOWS
 	Command = "\"\"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileIntegrationServerScript + "\" \"" + IntegrationServerSourceDirectory + "\"\"";
-#elif PLATFORM_MAC
+#elif PLATFORM_MAC || PLATFORM_LINUX
 	Command = "bash \"" + ProjectDir + "Content/IntegrationServer/" + EtherlinkerSettings->CompileIntegrationServerScript + "\" \"" + IntegrationServerSourceDirectory + "\"";
 #endif
 

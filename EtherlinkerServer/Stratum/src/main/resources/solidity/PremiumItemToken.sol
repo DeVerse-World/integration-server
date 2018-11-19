@@ -41,6 +41,23 @@ contract PremiumItemToken is ERC20Burnable, Ownable {
     }
 
     /**
+     * @dev Add new premium items in batch
+     * @param _itemIds Ids of the new items
+     * @param _itemPrices Prices of the new items
+     */
+    function batchAddPremiumItems(uint256[] _itemIds, uint256[] _itemPrices) external onlyOwner {
+
+        require(_itemIds.length == _itemPrices.length);
+
+        for (uint i=0; i<_itemIds.length; i++) {
+            PremiumItem memory premiumItem = PremiumItem(_itemIds[i], _itemPrices[i]);
+            premiumItems[_itemIds[i]] = premiumItem;
+            emit AddPremiumItemEvent(_itemIds[i]);
+        }
+
+    }
+
+    /**
      * @dev Edit premium item
      * @param _itemId Id of the existing item
      * @param _itemPrice Price of the existing item to change
@@ -52,12 +69,40 @@ contract PremiumItemToken is ERC20Burnable, Ownable {
     }
 
     /**
+     * @dev Edit new premium items in batch
+     * @param _itemIds Ids of the existing items
+     * @param _itemPrices Prices of the existing items to change
+     */
+    function batchEditPremiumItems(uint256[] _itemIds, uint256[] _itemPrices) external onlyOwner {
+
+        require(_itemIds.length == _itemPrices.length);
+
+        for (uint i=0; i<_itemIds.length; i++) {
+            PremiumItem memory premiumItem = PremiumItem(_itemIds[i], _itemPrices[i]);
+            premiumItems[_itemIds[i]] = premiumItem;
+            emit EditPremiumItemEvent(_itemIds[i]);
+        }
+
+    }
+
+    /**
      * @dev Delete existing premium item
      * @param _itemId Id of the item, which should be deleted
      */
     function deletePremiumItem(uint256 _itemId) external onlyOwner {
         delete premiumItems[_itemId];
         emit DeletePremiumItemEvent(_itemId);
+    }
+
+    /**
+     * @dev Delete existing premium items in batch
+     * @param _itemIds Ids of the items, which should be deleted
+     */
+    function batchDeletePremiumItems(uint256[] _itemIds) external onlyOwner {
+        for (uint i=0; i<_itemIds.length; i++) {
+            delete premiumItems[_itemIds[i]];
+            emit DeletePremiumItemEvent(_itemIds[i]);
+        }
     }
 
     /**
