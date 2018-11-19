@@ -89,7 +89,7 @@ bool UEtherlinkerRemoteWalletManager::MakeRequest(FWalletAuthenticationRequest W
 	TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("POST");
 
-	//HttpRequest->SetHeader(TEXT("User-Agent"), "X-UnrealEngine-Agent");
+	HttpRequest->SetHeader(TEXT("User-Agent"), "X-UnrealEngine-Agent");
 	HttpRequest->SetHeader("Content-Type", "application/json");
 	HttpRequest->SetHeader("SenderId", WalletAuthenticationRequest.senderId);
 	HttpRequest->SetHeader("UserIndex", WalletAuthenticationRequest.userIndex);

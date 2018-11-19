@@ -1,8 +1,10 @@
 package com.academy.stratum.controller;
 
 import com.academy.stratum.dto.WalletAuthenticationRequest;
+import com.academy.stratum.service.AntiSpamService;
 import com.academy.stratum.service.WalletAuthenticationService;
 import com.academy.utils.Ajax;
+import com.academy.utils.HttpRequestUtils;
 import com.academy.utils.RestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -27,18 +30,31 @@ public class WalletAuthenticationController {
     @Autowired
     private WalletAuthenticationService walletAuthenticationService;
 
+    @Autowired
+    private AntiSpamService antiSpamService;
+
     private static final Logger LOG = LoggerFactory.getLogger(WalletAuthenticationController.class);
 
     /**
      * Get wallet data by login/password to use it further in compatible app(like UE4)
      * @param data JSON request (@see {@link WalletAuthenticationRequest})
+     * @param request HTTP Request
      * @return Ajax response with wallet data
      * @throws RestException error, which happens during request processing
      */
     @RequestMapping(value = "/getWalletData", method = RequestMethod.POST)
     public @ResponseBody
-    Map<String, Object> getWalletData(@RequestBody String data) throws RestException {
+    Map<String, Object> getWalletData(@RequestBody String data, HttpServletRequest request) throws RestException {
         try {
+
+            if(!HttpRequestUtils.HttpRequestCheck(request)) {
+                throw new RestException("Invalid HTTP request");
+            }
+
+            if(!HttpRequestUtils.antiSpamCheck(request, antiSpamService, "getWalletData")) {
+                throw new RestException("Anti-spam service error. Please wait until block will be disabled and make less requests per second.");
+            }
+
             return Ajax.successResponse(walletAuthenticationService.getWalletData(getRequestData(data)));
         } catch (Exception e) {
             throw new RestException(e);
@@ -48,13 +64,23 @@ public class WalletAuthenticationController {
     /**
      * Create new user account and wallet for it and store everything in database
      * @param data JSON request (@see {@link WalletAuthenticationRequest})
+     * @param request HTTP Request
      * @return Ajax response
      * @throws RestException error, which happens during request processing
      */
     @RequestMapping(value = "/createUserAccount", method = RequestMethod.POST)
     public @ResponseBody
-    Map<String, Object> createUserAccount(@RequestBody String data) throws RestException {
+    Map<String, Object> createUserAccount(@RequestBody String data, HttpServletRequest request) throws RestException {
         try {
+
+            if(!HttpRequestUtils.HttpRequestCheck(request)) {
+                throw new RestException("Invalid HTTP request");
+            }
+
+            if(!HttpRequestUtils.antiSpamCheck(request, antiSpamService, "createUserAccount")) {
+                throw new RestException("Anti-spam service error. Please wait until block will be disabled and make less requests per second.");
+            }
+
             return Ajax.successResponse(walletAuthenticationService.createUserAccount(getRequestData(data)));
         } catch (Exception e) {
             throw new RestException(e);
