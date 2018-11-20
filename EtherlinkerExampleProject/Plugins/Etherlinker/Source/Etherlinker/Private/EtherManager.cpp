@@ -154,6 +154,35 @@ bool UEtherManager::ServerSetWalletData_Validate(FWalletData newWalletData)
 	return true;
 }
 
+void UEtherManager::ProcessBatchRequest(FEtherlinkerBatchRequestData etherlinkerBatchRequestData)
+{
+	if (GetOwner()->Role < ROLE_Authority) {
+		ServerProcessBatchRequest(etherlinkerBatchRequestData);
+		return;
+	}
+
+	for (int i = 0; i < etherlinkerBatchRequestData.etherlinkerRequestDataList.Num(); i++) {
+		etherlinkerBatchRequestData.etherlinkerRequestDataList[i] = AddWalletDataToRequest(etherlinkerBatchRequestData.etherlinkerRequestDataList[i]);
+	}
+	
+	MakeBatchRequest(etherlinkerBatchRequestData, "/processBatchRequest");
+
+#if !UE_BUILD_SHIPPING
+	UE_LOG(LogTemp, Warning, TEXT("ProcessBatchRequest executed"));
+#endif
+
+}
+
+void UEtherManager::ServerProcessBatchRequest_Implementation(FEtherlinkerBatchRequestData etherlinkerBatchRequestData)
+{
+	ProcessBatchRequest(etherlinkerBatchRequestData);
+}
+
+bool UEtherManager::ServerProcessBatchRequest_Validate(FEtherlinkerBatchRequestData etherlinkerBatchRequestData)
+{
+	return true;
+}
+
 FEtherlinkerRequestData UEtherManager::AddWalletDataToRequest(FEtherlinkerRequestData etherlinkerRequestData) const
 {
 	etherlinkerRequestData.walletAddress = walletData.walletAddress;
@@ -217,6 +246,60 @@ bool UEtherManager::MakeRequest(FEtherlinkerRequestData EtherlinkerRequestData, 
 	HttpRequest->SetURL(serverAddress + URL);
 	HttpRequest->SetContentAsString(OutputString);
 	HttpRequest->OnProcessRequestComplete().BindUObject(this, &UEtherManager::OnResponseReceived);
+	HttpRequest->ProcessRequest();
+
+	return true;
+}
+
+bool UEtherManager::MakeBatchRequest(FEtherlinkerBatchRequestData EtherlinkerBatchRequestData, const FString& URL)
+{
+	// Get actual server address from settings
+	UEtherlinkerSettings* EtherlinkerSettings = GetMutableDefault<UEtherlinkerSettings>();
+	check(EtherlinkerSettings);
+
+	FString serverAddress;
+	if (EtherlinkerBatchRequestData.serverAddress.IsEmpty()) {
+		serverAddress = EtherlinkerSettings->IntegrationServerURL;
+	}
+	else {
+		serverAddress = EtherlinkerBatchRequestData.serverAddress;
+	}
+
+	// Check infura URL
+	if (EtherlinkerBatchRequestData.InfuraURL.IsEmpty()) {
+		if (EtherlinkerSettings->InfuraURL.IsEmpty()) {
+			UE_LOG(LogTemp, Error, TEXT("Infura URL is empty. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server."));
+		}
+		else {
+			EtherlinkerBatchRequestData.InfuraURL = EtherlinkerSettings->InfuraURL;
+			for (int i = 0; i < EtherlinkerBatchRequestData.etherlinkerRequestDataList.Num(); i++) {
+				EtherlinkerBatchRequestData.etherlinkerRequestDataList[i].InfuraURL = EtherlinkerSettings->InfuraURL;
+			}
+		}
+	}
+
+	TSharedPtr<FJsonObject> JsontRequestObject = FJsonObjectConverter::UStructToJsonObject(EtherlinkerBatchRequestData);
+
+	FString OutputString;
+
+	TSharedRef<TJsonWriter<>> JsonWriter = TJsonWriterFactory<>::Create(&OutputString);
+
+	FJsonSerializer::Serialize(JsontRequestObject.ToSharedRef(), JsonWriter);
+
+#if !UE_BUILD_SHIPPING
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *OutputString);
+#endif
+
+	TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
+	HttpRequest->SetVerb("POST");
+
+	HttpRequest->SetHeader(TEXT("User-Agent"), "X-UnrealEngine-Agent");
+	HttpRequest->SetHeader("Content-Type", "application/json");
+	HttpRequest->SetHeader("SenderId", EtherlinkerBatchRequestData.senderId);
+	HttpRequest->SetHeader("UserIndex", EtherlinkerBatchRequestData.userIndex);
+	HttpRequest->SetURL(serverAddress + URL);
+	HttpRequest->SetContentAsString(OutputString);
+	HttpRequest->OnProcessRequestComplete().BindUObject(this, &UEtherManager::OnBatchResponseReceived);
 	HttpRequest->ProcessRequest();
 
 	return true;
@@ -336,4 +419,118 @@ void UEtherManager::OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr
 		}		
 	}
 	
+}
+
+void UEtherManager::OnBatchResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+{
+	if (!bWasSuccessful || !Response.IsValid())
+	{
+
+		// If we can't connect to the server or in case of any other error
+		FEtherlinkerBatchResponseData etherlinkerBatchResponseData;
+		etherlinkerBatchResponseData.data = "Unknown network error in processing HTTP response.";
+
+		if (!Request->GetHeader("UserIndex").IsEmpty())
+		{
+			etherlinkerBatchResponseData.userIndex = Request->GetHeader("UserIndex");
+			UE_LOG(LogTemp, Error, TEXT("User Index: %s"), *Request->GetHeader("UserIndex"));
+		}
+
+		if (!Request->GetHeader("SenderId").IsEmpty())
+		{
+			etherlinkerBatchResponseData.senderId = Request->GetHeader("SenderId");
+			UE_LOG(LogTemp, Error, TEXT("Sender Id: %s"), *Request->GetHeader("SenderId"));
+		}
+		else {
+			etherlinkerBatchResponseData.senderId = "DefaultErrorProcessor";
+			UE_LOG(LogTemp, Error, TEXT("Sender Id: DefaultErrorProcessor"));
+		}
+
+		OnBatchResponseReceivedEvent.Broadcast("error", etherlinkerBatchResponseData);
+		UE_LOG(LogTemp, Error, TEXT("Unknown network error in processing HTTP response."));
+
+	}
+	else
+	{
+		//Create a pointer to hold the json serialized data
+		TSharedPtr<FJsonObject> JsonObject;
+
+		//Create a reader pointer to read the json data
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
+
+		//Deserialize the json data given Reader and the actual object to deserialize
+		if (FJsonSerializer::Deserialize(Reader, JsonObject))
+		{
+
+			FString result = JsonObject->GetStringField("result");
+
+#if !UE_BUILD_SHIPPING
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *result);
+#endif
+
+			// Process error response
+			if (result.Equals("error")) {
+				FString errorText = JsonObject->GetStringField("data");
+				FEtherlinkerBatchResponseData etherlinkerBatchResponseData;
+				etherlinkerBatchResponseData.data = errorText;
+
+				if (!Request->GetHeader("UserIndex").IsEmpty())
+				{
+					etherlinkerBatchResponseData.userIndex = Request->GetHeader("UserIndex");
+					UE_LOG(LogTemp, Error, TEXT("User Index: %s"), *Request->GetHeader("UserIndex"));
+				}
+
+				if (!Request->GetHeader("SenderId").IsEmpty())
+				{
+					etherlinkerBatchResponseData.senderId = Request->GetHeader("SenderId");
+					UE_LOG(LogTemp, Error, TEXT("Sender Id: %s"), *Request->GetHeader("SenderId"));
+				}
+				else {
+					etherlinkerBatchResponseData.senderId = "DefaultErrorProcessor";
+					UE_LOG(LogTemp, Error, TEXT("Sender Id: DefaultErrorProcessor"));
+				}
+
+				UE_LOG(LogTemp, Error, TEXT("%s"), *etherlinkerBatchResponseData.data);
+
+				OnBatchResponseReceivedEvent.Broadcast(result, etherlinkerBatchResponseData);
+			}
+			else {
+				// Process normal response
+				TSharedPtr<FJsonObject> JsonResponseObject = JsonObject->GetObjectField("data");
+				FEtherlinkerBatchResponseData etherlinkerBatchResponseData;
+				FJsonObjectConverter::JsonAttributesToUStruct(JsonResponseObject->Values, FEtherlinkerBatchResponseData::StaticStruct(), &etherlinkerBatchResponseData, 0, 0);
+
+#if !UE_BUILD_SHIPPING
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *etherlinkerBatchResponseData.data);
+#endif
+
+				OnBatchResponseReceivedEvent.Broadcast(result, etherlinkerBatchResponseData);
+			}
+
+		}
+		else {
+			// If we can't deserialize JSON response
+			FEtherlinkerBatchResponseData etherlinkerBatchResponseData;
+			etherlinkerBatchResponseData.data = "Can't deserialize JSON response.";
+
+			if (!Request->GetHeader("UserIndex").IsEmpty())
+			{
+				etherlinkerBatchResponseData.userIndex = Request->GetHeader("UserIndex");
+				UE_LOG(LogTemp, Error, TEXT("User Index: %s"), *Request->GetHeader("UserIndex"));
+			}
+
+			if (!Request->GetHeader("SenderId").IsEmpty())
+			{
+				etherlinkerBatchResponseData.senderId = Request->GetHeader("SenderId");
+				UE_LOG(LogTemp, Error, TEXT("Sender Id: %s"), *Request->GetHeader("SenderId"));
+			}
+			else {
+				etherlinkerBatchResponseData.senderId = "DefaultErrorProcessor";
+				UE_LOG(LogTemp, Error, TEXT("Sender Id: DefaultErrorProcessor"));
+			}
+
+			OnBatchResponseReceivedEvent.Broadcast("error", etherlinkerBatchResponseData);
+			UE_LOG(LogTemp, Error, TEXT("Can't deserialize JSON response."));
+		}
+	}
 }

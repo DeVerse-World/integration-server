@@ -1,6 +1,8 @@
 package com.academy.stratum.service;
 
+import com.academy.stratum.dto.EtherlinkerBatchResponseData;
 import com.academy.stratum.dto.EtherlinkerRequestData;
+import com.academy.stratum.dto.EtherlinkerBatchRequestData;
 import com.academy.stratum.dto.EtherlinkerResponseData;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.admin.Admin;
@@ -88,6 +90,14 @@ public interface EthereumService {
      * @throws Exception any exception, which happened during method execution
      */
     EtherlinkerResponseData execContractMethod(EtherlinkerRequestData etherlinkerRequestData) throws Exception;
+
+    /**
+     * Execute custom solidity contract method
+     * @param etherlinkerBatchRequestData batch request data from compatible application (like UE4)
+     * @return EtherlinkerBatchResponseData batch response data with a results of method execution
+     * @throws Exception any exception, which happened during method execution
+     */
+    EtherlinkerBatchResponseData processBatchRequest(EtherlinkerBatchRequestData etherlinkerBatchRequestData) throws Exception;
 
     /**
      * Enhance response data with parameters, which are common for any type of response

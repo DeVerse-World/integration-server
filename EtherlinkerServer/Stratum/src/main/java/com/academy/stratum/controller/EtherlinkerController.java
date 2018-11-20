@@ -1,6 +1,7 @@
 package com.academy.stratum.controller;
 
 import com.academy.stratum.dto.EtherlinkerRequestData;
+import com.academy.stratum.dto.EtherlinkerBatchRequestData;
 import com.academy.stratum.service.AntiSpamService;
 import com.academy.stratum.service.EthereumService;
 import com.academy.utils.Ajax;
@@ -167,6 +168,32 @@ public class EtherlinkerController {
     }
 
     /**
+     * Process batch request
+     * @param data JSON batch request (@see {@link EtherlinkerBatchRequestData})
+     * @param request HTTP Request
+     * @return Ajax response
+     * @throws RestException error, which happens during request processing
+     */
+    @RequestMapping(value = "/processBatchRequest", method = RequestMethod.POST)
+    public @ResponseBody
+    Map<String, Object> processBatchRequest(@RequestBody String data, HttpServletRequest request) throws RestException {
+        try {
+
+            if(!HttpRequestUtils.HttpRequestCheck(request)) {
+                throw new RestException("Invalid HTTP request");
+            }
+
+            if(!HttpRequestUtils.antiSpamCheck(request, antiSpamService, "processBatchRequest")) {
+                throw new RestException("Anti-spam service error. Please wait until block will be disabled and make less requests per second.");
+            }
+
+            return Ajax.successResponse(ethereumService.processBatchRequest(getBatchRequestData(data)));
+        } catch (Exception e) {
+            throw new RestException(e);
+        }
+    }
+
+    /**
      * Extracting {@link EtherlinkerRequestData} from JSON request
      * @param data JSON request (@see {@link EtherlinkerRequestData})
      * @return EtherlinkerRequestData
@@ -188,6 +215,34 @@ public class EtherlinkerController {
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(data, EtherlinkerRequestData.class);
+
+        } catch (Exception e) {
+            throw new RestException(e);
+        }
+    }
+
+    /**
+     * Extracting {@link EtherlinkerBatchRequestData} from JSON request
+     * @param data JSON batch request (@see {@link EtherlinkerBatchRequestData})
+     * @return EtherlinkerBatchRequestData
+     * @throws RestException error, which happens during request processing
+     */
+    private EtherlinkerBatchRequestData getBatchRequestData(String data) throws RestException {
+        try {
+
+            // Check input params
+            if (data == null || data.trim().equals("")) {
+                throw new RestException("No valid request data");
+            }
+            if (data.trim().length() > 10000) {
+                throw new RestException("No valid request data");
+            }
+            if (data.trim().length() < 1) {
+                throw new RestException("No valid request data");
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(data, EtherlinkerBatchRequestData.class);
 
         } catch (Exception e) {
             throw new RestException(e);

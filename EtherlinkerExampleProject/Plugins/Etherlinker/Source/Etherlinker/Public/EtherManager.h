@@ -46,6 +46,12 @@ public:
 	FResponseReceivedDelegate OnResponseReceivedEvent;
 
 	/**
+	 * Event dispatcher - OnBatchResponseReceived
+	 */
+	UPROPERTY(BlueprintAssignable)
+	FBatchResponseReceivedDelegate OnBatchResponseReceivedEvent;
+
+	/**
 	 * Get wallet balance
 	 *
 	 * @param etherlinkerRequestData request data to send to the Integration Server
@@ -135,6 +141,21 @@ public:
 	void ServerSetWalletData_Implementation(FWalletData newWalletData);
 
 	bool ServerSetWalletData_Validate(FWalletData newWalletData);
+
+	/**
+	 * Process batch request and send it to the Integration Server
+	 *
+	 * @param etherlinkerBatchRequestData batch request data to send to the Integration Server
+	 */
+	UFUNCTION(BlueprintCallable, Category = "EtherManager")
+	void ProcessBatchRequest(FEtherlinkerBatchRequestData etherlinkerBatchRequestData);
+
+	UFUNCTION(Reliable, Server, WithValidation)
+	void ServerProcessBatchRequest(FEtherlinkerBatchRequestData etherlinkerBatchRequestData);
+
+	void ServerProcessBatchRequest_Implementation(FEtherlinkerBatchRequestData etherlinkerBatchRequestData);
+
+	bool ServerProcessBatchRequest_Validate(FEtherlinkerBatchRequestData etherlinkerBatchRequestData);
 	
 private:
 
@@ -148,6 +169,15 @@ private:
 	bool MakeRequest(FEtherlinkerRequestData EtherlinkerRequestData, const FString& URL);
 
 	/**
+	 * Make a JSON batch request over HTTP
+	 *
+	 * @param etherlinkerBatchRequestData batch request data to send to the Integration Server
+	 * @param URL MVC controller method address on integration server
+	 * @return true if request successfully sent
+	 */
+	bool MakeBatchRequest(FEtherlinkerBatchRequestData EtherlinkerBatchRequestData, const FString& URL);
+
+	/**
 	 * Receive response for JSON request
 	 *
 	 * @param Request request data, which was sent to the integration server
@@ -155,6 +185,15 @@ private:
 	 * @param bWasSuccessful true if response successfully processed on the integration server
 	 */
 	void OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+
+	/**
+	 * Receive batch response for JSON request
+	 *
+	 * @param Request request data, which was sent to the integration server
+	 * @param Response response from the integration server
+	 * @param bWasSuccessful true if response successfully processed on the integration server
+	 */
+	void OnBatchResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
 	/**
 	 * Add wallet data to the selected request structure

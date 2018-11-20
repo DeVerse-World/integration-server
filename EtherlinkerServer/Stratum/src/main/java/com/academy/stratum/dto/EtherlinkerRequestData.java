@@ -122,6 +122,11 @@ public class EtherlinkerRequestData {
      */
     private String ethAmountToSend;
 
+    /**
+     * Operation type, which was used during method execution (like "createWallet" or "deployContract")
+     */
+    private String operationType;
+
     public String getSenderId() {
         return senderId;
     }
@@ -280,5 +285,13 @@ public class EtherlinkerRequestData {
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
     }
 }

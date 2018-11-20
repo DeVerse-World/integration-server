@@ -283,6 +283,12 @@ struct ETHERLINKER_API FEtherlinkerRequestData {
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
 	FString ethAmountToSend;
 
+	/**
+	 * Operation type, which was used during method execution (like "createWallet" or "deployContract")
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString operationType;
+
 	FEtherlinkerRequestData() {
 		senderId = "";
 		userIndex = "0";
@@ -302,6 +308,7 @@ struct ETHERLINKER_API FEtherlinkerRequestData {
 		InfuraURL = "";
 		receiverAddress = "";
 		ethAmountToSend = "";
+		operationType = "";
 	}
 };
 
@@ -434,9 +441,114 @@ struct ETHERLINKER_API FEtherlinkerResponseData {
 };
 
 /**
+* JSON batch request data
+*/
+USTRUCT(BlueprintType)
+struct ETHERLINKER_API FEtherlinkerBatchRequestData {
+
+	GENERATED_USTRUCT_BODY()
+
+	/**
+	 * Unique sender identifier
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString senderId;
+
+	/**
+	 * User index in a project with multiplayer support
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString userIndex;
+
+	/**
+	 * Link to the Integration Server
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString serverAddress;
+
+	/**
+	 * You should specify your custom access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString InfuraURL;
+
+	/**
+	 * Version of batch request data API
+	 * Current version: 1
+	 */
+	UPROPERTY(BlueprintReadOnly, Category = "EtherManager")
+	FString batchRequestDataVersion;
+
+	/**
+	 * List of requests to Ethereum blockchain
+	*/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	TArray<FEtherlinkerRequestData> etherlinkerRequestDataList;
+
+	FEtherlinkerBatchRequestData() {
+		senderId = "";
+		userIndex = "0";
+		batchRequestDataVersion = "1";
+	}
+
+};
+
+/**
+* JSON batch response data
+*/
+USTRUCT(BlueprintType)
+struct ETHERLINKER_API FEtherlinkerBatchResponseData {
+
+	GENERATED_USTRUCT_BODY()
+
+	/**
+	 * Unique sender identifier
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString senderId;
+
+	/**
+	 * User index in a project with multiplayer support
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString userIndex;
+
+	/**
+	 * Custom response data (can be transaction receipt, wallet balance, etc)
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	FString data;
+
+	/**
+	 * Version of batch response data API
+	 * Current version: 1
+	 */
+	UPROPERTY(BlueprintReadOnly, Category = "EtherManager")
+	FString batchResponseDataVersion;
+
+	/**
+	 * List of responses from Ethereum blockchain
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "EtherManager")
+	TArray<FEtherlinkerResponseData> etherlinkerResponseDataList;
+
+	FEtherlinkerBatchResponseData() {
+		senderId = "";
+		data = "";
+		userIndex = "0";
+		batchResponseDataVersion = "1";
+	}
+};
+
+/**
 * Event dispatcher declaration - OnResponseReceived
 */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FResponseReceivedDelegate, FString, Result, FEtherlinkerResponseData, Data);
+
+/**
+* Event dispatcher declaration - OnBatchResponseReceived
+*/
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBatchResponseReceivedDelegate, FString, Result, FEtherlinkerBatchResponseData, Data);
 
 /**
 * Event dispatcher declaration - OnWalletAuthenticatorResponseReceived

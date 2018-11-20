@@ -1,8 +1,10 @@
 package com.academy.stratum.service.impl;
 
 import com.academy.contracts.MethodParamsTester;
+import com.academy.stratum.dto.EtherlinkerBatchRequestData;
 import com.academy.stratum.dto.EtherlinkerRequestData;
 import com.academy.stratum.dto.EtherlinkerResponseData;
+import com.academy.stratum.dto.EtherlinkerBatchResponseData;
 import com.academy.stratum.service.EthereumService;
 import com.academy.utils.RestException;
 import org.apache.commons.io.FilenameUtils;
@@ -351,6 +353,44 @@ public class EthereumServiceImpl implements EthereumService {
         etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "execContractMethod");
 
         return etherlinkerResponseData;
+    }
+
+    @Override
+    public EtherlinkerBatchResponseData processBatchRequest(EtherlinkerBatchRequestData etherlinkerBatchRequestData) throws Exception {
+
+        EtherlinkerBatchResponseData etherlinkerBatchResponseData = new EtherlinkerBatchResponseData();
+        etherlinkerBatchResponseData.setEtherlinkerResponseDataList(new ArrayList<>());
+        etherlinkerBatchResponseData.setSenderId(etherlinkerBatchRequestData.getSenderId());
+        etherlinkerBatchResponseData.setUserIndex(etherlinkerBatchRequestData.getUserIndex());
+        etherlinkerBatchResponseData.setData("Operation completed");
+        etherlinkerBatchResponseData.setBatchResponseDataVersion("1");
+
+        for(EtherlinkerRequestData etherlinkerRequestData : etherlinkerBatchRequestData.getEtherlinkerRequestDataList()) {
+            switch (etherlinkerRequestData.getOperationType()) {
+                case "getWalletBalance": {
+                    etherlinkerBatchResponseData.getEtherlinkerResponseDataList().add(getBalance(etherlinkerRequestData));
+                    break;
+                }
+                case "transferEther": {
+                    etherlinkerBatchResponseData.getEtherlinkerResponseDataList().add(transferEther(etherlinkerRequestData));
+                    break;
+                }
+                case "createWallet": {
+                    etherlinkerBatchResponseData.getEtherlinkerResponseDataList().add(createWallet(etherlinkerRequestData));
+                    break;
+                }
+                case "deployContract": {
+                    etherlinkerBatchResponseData.getEtherlinkerResponseDataList().add(deployContract(etherlinkerRequestData));
+                    break;
+                }
+                case "execContractMethod": {
+                    etherlinkerBatchResponseData.getEtherlinkerResponseDataList().add(execContractMethod(etherlinkerRequestData));
+                    break;
+                }
+            }
+        }
+
+        return etherlinkerBatchResponseData;
     }
 
     public ArrayList<String> createWallet(String path, String password) throws Exception {
