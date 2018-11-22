@@ -11,6 +11,7 @@
 #include "Runtime/Core/Public/Misc/AES.h"
 #include "Runtime/Core/Public/Misc/SecureHash.h"
 #include "Runtime/Core/Public/Misc/Base64.h"
+#include "Runtime/Core/Public/Internationalization/Regex.h"
 
 #if WITH_EDITOR
 #include "Editor/UnrealEd/Classes/Editor/EditorEngine.h"
@@ -555,4 +556,27 @@ FVector UEtherlinkerFunctionLibrary::GetImpactPointForWidget(UWidgetComponent *W
 	else {
 		return ImpactPoint;
 	}
+}
+
+bool UEtherlinkerFunctionLibrary::IsWalletAddressValid(FString WalletAddress)
+{
+
+	if (WalletAddress.IsEmpty()) {
+		return false;
+	}
+
+	const FRegexPattern simpleAddressCheckPattern(TEXT("^(0x)[0-9a-fA-F]{40}$"));
+	FRegexMatcher simpleAddressCheckMatcher(simpleAddressCheckPattern, WalletAddress);
+
+	return simpleAddressCheckMatcher.FindNext();
+}
+
+bool UEtherlinkerFunctionLibrary::FileExists(FString Filename)
+{
+
+	if (Filename.IsEmpty()) {
+		return false;
+	}
+
+	return FPaths::FileExists(Filename);
 }

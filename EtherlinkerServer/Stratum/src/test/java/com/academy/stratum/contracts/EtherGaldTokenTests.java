@@ -175,7 +175,7 @@ public class EtherGaldTokenTests {
         contractMethodParams.add("1"); // Amount of premium days
         contractMethodParams.add("1"); // Premium Subscription Type Id
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         contractMethodParamTypes.add("Number");
         contractMethodParamTypes.add("Number");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
@@ -205,7 +205,7 @@ public class EtherGaldTokenTests {
         contractMethodParams.add(etherlinkerRequestData.getWalletAddress()); // Wallet address
         contractMethodParams.add("1"); // Premium Subscription Type Id
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         contractMethodParamTypes.add("Number");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
@@ -375,7 +375,7 @@ public class EtherGaldTokenTests {
         contractMethodParams.add(etherlinkerRequestData.getWalletAddress()); // Wallet address
         contractMethodParams.add("1"); // Premium Item Id
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         contractMethodParamTypes.add("Number");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
@@ -404,7 +404,7 @@ public class EtherGaldTokenTests {
         contractMethodParams.add(etherlinkerRequestData.getWalletAddress()); // Wallet address
         contractMethodParams.add("1"); // Premium Item Id
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         contractMethodParamTypes.add("Number");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);

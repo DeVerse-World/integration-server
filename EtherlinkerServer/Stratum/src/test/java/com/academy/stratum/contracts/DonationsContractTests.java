@@ -92,7 +92,7 @@ public class DonationsContractTests {
         ArrayList<String> contractMethodParams = new ArrayList<>();
         contractMethodParams.add("0x4f3d30151a35039bf701e92479C3b9fe88539e7d");
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
 

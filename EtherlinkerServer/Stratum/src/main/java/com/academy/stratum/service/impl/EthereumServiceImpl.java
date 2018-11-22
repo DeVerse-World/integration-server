@@ -6,6 +6,7 @@ import com.academy.stratum.dto.EtherlinkerRequestData;
 import com.academy.stratum.dto.EtherlinkerResponseData;
 import com.academy.stratum.dto.EtherlinkerBatchResponseData;
 import com.academy.stratum.service.EthereumService;
+import com.academy.utils.AddressUtils;
 import com.academy.utils.RestException;
 import org.apache.commons.io.FilenameUtils;
 import org.bitcoinj.core.ECKey;
@@ -15,10 +16,7 @@ import org.bitcoinj.crypto.HDKeyDerivation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.ECKeyPair;
-import org.web3j.crypto.MnemonicUtils;
-import org.web3j.crypto.WalletUtils;
+import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.admin.Admin;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -77,6 +75,12 @@ public class EthereumServiceImpl implements EthereumService {
             throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
         }
 
+        String receiverWalletAddress = etherlinkerRequestData.getReceiverAddress();
+        if(!AddressUtils.IsAddressValid(receiverWalletAddress)) {
+            throw new RestException("Invalid receiver address parameter");
+        }
+        receiverWalletAddress = Keys.toChecksumAddress(receiverWalletAddress);
+
         Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
 
         Credentials wallet = loadCredentials(etherlinkerRequestData);
@@ -84,7 +88,7 @@ public class EthereumServiceImpl implements EthereumService {
         EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
 
         TransactionReceipt transactionReceipt = Transfer.sendFunds(
-                web3j, wallet, etherlinkerRequestData.getReceiverAddress(),
+                web3j, wallet, receiverWalletAddress,
                 new BigDecimal(etherlinkerRequestData.getEthAmountToSend()), Convert.Unit.ETHER).send();
 
         if (Optional.ofNullable(transactionReceipt).isPresent()) {
@@ -105,12 +109,18 @@ public class EthereumServiceImpl implements EthereumService {
             throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
         }
 
+        String walletAddress = etherlinkerRequestData.getWalletAddress();
+        if(!AddressUtils.IsAddressValid(walletAddress)) {
+            throw new RestException("Invalid address parameter");
+        }
+        walletAddress = Keys.toChecksumAddress(walletAddress);
+
         Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
 
         EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
 
         EthGetBalance ethGetBalance = web3j
-                .ethGetBalance(etherlinkerRequestData.getWalletAddress(), DefaultBlockParameterName.LATEST)
+                .ethGetBalance(walletAddress, DefaultBlockParameterName.LATEST)
                 .sendAsync()
                 .get();
 
@@ -174,6 +184,12 @@ public class EthereumServiceImpl implements EthereumService {
             throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
         }
 
+        String contractAddress = etherlinkerRequestData.getContractAddress();
+        if(!AddressUtils.IsAddressValid(contractAddress)) {
+            throw new RestException("Invalid contract address parameter");
+        }
+        contractAddress = Keys.toChecksumAddress(contractAddress);
+
         Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
 
         Credentials wallet = loadCredentials(etherlinkerRequestData);
@@ -192,7 +208,7 @@ public class EthereumServiceImpl implements EthereumService {
             gasLimit = new BigInteger(etherlinkerRequestData.getGasLimit());
         }
 
-        Object contract = loadMethod.invoke(null, etherlinkerRequestData.getContractAddress(), web3j, wallet, gasPrice, gasLimit);
+        Object contract = loadMethod.invoke(null, contractAddress, web3j, wallet, gasPrice, gasLimit);
 
         EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
 
@@ -205,6 +221,10 @@ public class EthereumServiceImpl implements EthereumService {
             for (int i = 0; i < etherlinkerRequestData.getContractMethodParamTypes().size(); i++) {
                 switch (etherlinkerRequestData.getContractMethodParamTypes().get(i)) {
                     case "String": {
+                        parameterTypes[i] = String.class;
+                        break;
+                    }
+                    case "Address": {
                         parameterTypes[i] = String.class;
                         break;
                     }
@@ -248,6 +268,14 @@ public class EthereumServiceImpl implements EthereumService {
                 switch (etherlinkerRequestData.getContractMethodParamTypes().get(i)) {
                     case "String": {
                         parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
+                        break;
+                    }
+                    case "Address": {
+                        parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
+                        if(!AddressUtils.IsAddressValid((String)parameters[i])) {
+                            throw new RestException("Invalid address parameter");
+                        }
+                        parameters[i] = Keys.toChecksumAddress((String)parameters[i]);
                         break;
                     }
                     case "Number": {
@@ -465,7 +493,7 @@ public class EthereumServiceImpl implements EthereumService {
         etherlinkerResponseData.setContractAddress(etherlinkerRequestData.getContractAddress());
         etherlinkerResponseData.setContractName(etherlinkerRequestData.getContractName());
         etherlinkerResponseData.setContractMethodName(etherlinkerRequestData.getContractMethodName());
-        etherlinkerResponseData.setWalletAddress(etherlinkerRequestData.getWalletAddress());
+        etherlinkerResponseData.setWalletAddress(Keys.toChecksumAddress(etherlinkerRequestData.getWalletAddress()));
         etherlinkerResponseData.setOperationType(operationType);
         etherlinkerResponseData.setSenderId(etherlinkerRequestData.getSenderId());
         etherlinkerResponseData.setUserIndex(etherlinkerRequestData.getUserIndex());

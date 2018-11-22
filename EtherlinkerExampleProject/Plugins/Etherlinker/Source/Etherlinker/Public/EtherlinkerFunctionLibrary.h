@@ -160,6 +160,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Etherlinker VR")
 	static FVector GetImpactPointForWidget(UWidgetComponent *Widget, UWidgetInteractionComponent *WidgetInteractor, FVector ImpactPoint);
 
+	/**
+	 * Validate wallet address
+	 * @param WalletAddress wallet address
+	 *
+	 * @return true if wallet address has a valid format (0x...)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Etherlinker VR")
+	static bool IsWalletAddressValid(FString WalletAddress);
+
+	/**
+	 * Check if file exists
+	 * @param Filename filename
+	 *
+	 * @return true if file exists
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Etherlinker VR")
+	static bool FileExists(FString Filename);
+
 	static FProcHandle ProcessHandle;
 
 };

@@ -122,7 +122,7 @@ public class EtherPetTokenTests {
         contractMethodParams.add("0x4f3d30151a35039bf701e92479C3b9fe88539e7d"); // Owner address
         contractMethodParams.add("Wyrm"); // Entity Name
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         contractMethodParamTypes.add("String");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
@@ -148,7 +148,7 @@ public class EtherPetTokenTests {
         ArrayList<String> contractMethodParams = new ArrayList<>();
         contractMethodParams.add("0x4f3d30151a35039bf701e92479C3b9fe88539e7d"); // Owner address
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
         try {
@@ -173,7 +173,7 @@ public class EtherPetTokenTests {
         contractMethodParams.add("0x4f3d30151a35039bf701e92479C3b9fe88539e7d"); // Owner address
         contractMethodParams.add("0"); // Index in _ownedTokens array
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         contractMethodParamTypes.add("Number");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
@@ -199,7 +199,7 @@ public class EtherPetTokenTests {
         ArrayList<String> contractMethodParams = new ArrayList<>();
         contractMethodParams.add("0x4f3d30151a35039bf701e92479C3b9fe88539e7d"); // Owner address
         ArrayList<String> contractMethodParamTypes = new ArrayList<>();
-        contractMethodParamTypes.add("String");
+        contractMethodParamTypes.add("Address");
         etherlinkerRequestData.setContractMethodParams(contractMethodParams);
         etherlinkerRequestData.setContractMethodParamTypes(contractMethodParamTypes);
         try {
