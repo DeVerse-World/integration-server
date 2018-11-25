@@ -24,14 +24,25 @@
 - Custom solidity contracts support
 - ERC20 token contract template with Premium Items and Subscriptions support
 - ERC721 token contract template to make unique in-game entities, like pets
-- Donations contract template - raise funds for your projects without paying commissions to third party providers.
+- Donations contract template - raise funds for your projects without paying commissions to third party providers
+- Execute multiple operations on Ethereum blockchain from UE4 with a single batch request
 - Lots of template widgets (compatible with VR and multiplayer) to speed up your development
 - Lots of ways to create or load Ethereum wallets.
-- Data encryption methods on both UE4 and integration server sides (SSL, AES-256, RSA, ECDSA, HMAC).
+- Data encryption methods on both UE4 and integration server sides (SSL, AES-256, RSA, ECDSA, HMAC)
 - External database support for integration server (Default is H2, recommended PostgreSQL)
 - Integration server monitoring via Java Melody
 - Multiplayer Support
 - VR Support
+
+### **Why you may need this project:** ###
+
+- You want to add an additional source of income for your project (without any royalties to third-party providers)
+- You want to store some data on Ethereum blockchain and use it in your projects
+- You need to implement some logic in solidity contracts and interact with them in UE4
+- You want to make blockchain-powered games
+- You want to make a virtual store in VR and sell your real-world products in it
+- You are an enterprise developer and want to use it for *** (removed due to NDA)
+- You want to use some examples (not related to blockchain) from it in your projects
 
 ### **Requirements** ###
 
