@@ -21,6 +21,11 @@ FProcHandle UEtherlinkerFunctionLibrary::ProcessHandle;
 
 bool UEtherlinkerFunctionLibrary::StartIntegrationServer()
 {
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    return false;
+#endif
+    
 	if (UEtherlinkerFunctionLibrary::ProcessHandle.IsValid()) {
 		if (FPlatformProcess::IsProcRunning(ProcessHandle)) {
 			UE_LOG(LogTemp, Warning, TEXT("Integration server already started"));
@@ -71,6 +76,11 @@ bool UEtherlinkerFunctionLibrary::StartIntegrationServer()
 
 bool UEtherlinkerFunctionLibrary::StopIntegrationServer()
 {
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    return false;
+#endif
+    
 	if (UEtherlinkerFunctionLibrary::ProcessHandle.IsValid())
 	{
 		if (FPlatformProcess::IsProcRunning(ProcessHandle)) {
@@ -87,6 +97,11 @@ bool UEtherlinkerFunctionLibrary::StopIntegrationServer()
 
 bool UEtherlinkerFunctionLibrary::RestartIntegrationServer()
 {
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    return false;
+#endif
+    
 	// If we have a valid ProcessHandle reference
 	if (UEtherlinkerFunctionLibrary::ProcessHandle.IsValid())
 	{
@@ -133,6 +148,11 @@ bool UEtherlinkerFunctionLibrary::RestartIntegrationServer()
 
 bool UEtherlinkerFunctionLibrary::CheckIntegrationServer()
 {
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    return false;
+#endif
+    
 	if (UEtherlinkerFunctionLibrary::ProcessHandle.IsValid())
 	{
 		if (FPlatformProcess::IsProcRunning(ProcessHandle)) {
@@ -153,6 +173,10 @@ bool UEtherlinkerFunctionLibrary::CheckIntegrationServer()
 
 bool UEtherlinkerFunctionLibrary::CompileContracts()
 {
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    return false;
+#endif
 
 	// Step 1: Search for contract files
 	UEtherlinkerSettings* EtherlinkerSettings = GetMutableDefault<UEtherlinkerSettings>();
@@ -217,8 +241,10 @@ bool UEtherlinkerFunctionLibrary::CompileContracts()
 
 	auto Conv = StringCast<ANSICHAR>(*Command);
 	const ANSICHAR* Ptr = Conv.Get();
+    
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 	int ReturnCode = system(Ptr);
-
+    
 	if (ReturnCode == 0) {
 		UE_LOG(LogTemp, Warning, TEXT("Contract compilation completed successfully"));
 		return true;
@@ -226,12 +252,18 @@ bool UEtherlinkerFunctionLibrary::CompileContracts()
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Contract compilation failed with error code: %d"), ReturnCode);
 		return false;
-	}	
+	}
+    
+#endif
 	
 }
 
 bool UEtherlinkerFunctionLibrary::CompileIntegrationServer()
 {
+    
+#if PLATFORM_IOS || PLATFORM_ANDROID
+    return false;
+#endif
 
 	// Step 1: Compile IntegrationServer
 	if (!StopIntegrationServer()) {
@@ -256,6 +288,8 @@ bool UEtherlinkerFunctionLibrary::CompileIntegrationServer()
 
 	auto Conv = StringCast<ANSICHAR>(*Command);
 	const ANSICHAR* Ptr = Conv.Get();
+    
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 	int ReturnCode = system(Ptr);
 
 	if (ReturnCode == 0) {
@@ -265,7 +299,8 @@ bool UEtherlinkerFunctionLibrary::CompileIntegrationServer()
 		UE_LOG(LogTemp, Warning, TEXT("Integration server compilation failed with error code: %d"), ReturnCode);
 		return false;
 	}
-
+#endif
+    
 	// Step 2: Copy new .war file to the Content/IntegrationServer
 	FString WarFileSourcePath = IntegrationServerSourceDirectory + "/target/stratum-1.0.war";
 	FString WarFileDestinationPath = ProjectDir + "Content/IntegrationServer/stratum-1.0.war";
