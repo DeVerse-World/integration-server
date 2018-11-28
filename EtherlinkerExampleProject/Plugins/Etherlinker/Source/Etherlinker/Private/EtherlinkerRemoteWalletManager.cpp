@@ -1,4 +1,5 @@
 #include "EtherlinkerRemoteWalletManager.h"
+#include "EtherlinkerSettings.h"
 
 UEtherlinkerRemoteWalletManager::UEtherlinkerRemoteWalletManager()
 {
@@ -39,7 +40,16 @@ void UEtherlinkerRemoteWalletManager::CreateUserAccount(FWalletAuthenticationReq
 	}
 
 	if (walletAuthenticationRequest.walletPath.IsEmpty()) {
-		walletAuthenticationRequest.walletPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()).Append("EtherlinkerKeys/");
+
+		UEtherlinkerSettings* EtherlinkerSettings = GetMutableDefault<UEtherlinkerSettings>();
+		check(EtherlinkerSettings);
+
+		if (!EtherlinkerSettings->DefaultWalletPath.IsEmpty()) {
+			walletAuthenticationRequest.walletPath = EtherlinkerSettings->DefaultWalletPath;
+		}
+		else {
+			walletAuthenticationRequest.walletPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()).Append("EtherlinkerKeys/");
+		}
 	}
 
 	MakeRequest(walletAuthenticationRequest, "/createUserAccount");

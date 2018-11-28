@@ -49,6 +49,7 @@ public class WalletAuthenticationServiceImpl implements WalletAuthenticationServ
     private EthereumService ethereumService;
 
     @Override
+    @SuppressWarnings("Duplicates")
     public WalletAuthenticationResponse getWalletData(WalletAuthenticationRequest walletAuthenticationRequest) throws Exception {
 
         // Check input parameters
@@ -110,6 +111,7 @@ public class WalletAuthenticationServiceImpl implements WalletAuthenticationServ
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public WalletAuthenticationResponse createUserAccount(WalletAuthenticationRequest walletAuthenticationRequest) throws Exception {
 
         // Check input parameters
@@ -144,7 +146,7 @@ public class WalletAuthenticationServiceImpl implements WalletAuthenticationServ
         String hashedPassword = String.valueOf(Hex.encodeHex(passwordHash));
 
         // Making keys
-        RSAKeyPair rsaKeyPair = new RSAKeyPair();
+        RSAKeyPair rsaKeyPair = new RSAKeyPair(2048);
         ECDSAKeyPair ecdsaKeyPair = new ECDSAKeyPair();
         MACSecretKey macSecretKey = new MACSecretKey();
 

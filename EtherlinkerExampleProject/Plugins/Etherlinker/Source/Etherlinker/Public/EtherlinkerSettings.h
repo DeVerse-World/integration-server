@@ -44,6 +44,10 @@ class ETHERLINKER_API UEtherlinkerSettings : public UObject
 	UPROPERTY(config, EditAnywhere, Category = "Etherlinker Settings")
 	FString CompileIntegrationServerScript;
 
+	// Default wallet path (where Integration Server will place wallet files)
+	UPROPERTY(config, EditAnywhere, Category = "Etherlinker Settings")
+	FString DefaultWalletPath;
+
 	// Infura URL
 	UPROPERTY(config, EditAnywhere, Category = "Etherlinker Settings")
 	FString InfuraURL;

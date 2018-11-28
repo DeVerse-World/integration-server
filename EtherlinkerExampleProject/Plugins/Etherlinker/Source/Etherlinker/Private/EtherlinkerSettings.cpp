@@ -10,6 +10,7 @@ UEtherlinkerSettings::UEtherlinkerSettings(const FObjectInitializer& ObjectIniti
 	RunIntegrationServerSilently(false),
 	CompileContractsScript("compileContracts.bat"),
 	CompileIntegrationServerScript("compileIntegrationServer.bat"),
+	DefaultWalletPath(""),
 	//MavenDirectory(""),
 	InfuraURL("")/*,
 	StartServerScriptPath(""),

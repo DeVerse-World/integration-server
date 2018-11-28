@@ -44,6 +44,9 @@
 - You are an enterprise developer and want to use it for *** (removed due to NDA)
 - You want to use some examples (not related to blockchain) from it in your projects
 
+**Supported platforms:** Windows, Mac, Android, iOS  
+**Supported engine versions:** 4.20, 4.21
+
 ### **Requirements** ###
 
 **To start using Etherlinker for UE4, you need:**
@@ -54,7 +57,7 @@
 
 **If you want to add custom contracts, change plugin's or server code:**
 
-- Visual Studio 2017 (https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)    
+- Visual Studio 2017 or above (https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)    
 - JDK 8 (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - to compile integration server.  
 - IntelliJ IDEA or similar IDE - to modify code of integration server.  
 - Set JAVA_HOME variable to the JDK 8 location in order to run maven (just search for "how to set JAVA_HOME variable in Windows/Linux/Mac OS).  

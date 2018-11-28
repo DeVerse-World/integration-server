@@ -1,4 +1,5 @@
 #include "EtherManager.h"
+#include "EtherlinkerSettings.h"
 
 UEtherManager::UEtherManager()
 {
@@ -191,7 +192,17 @@ FEtherlinkerRequestData UEtherManager::AddWalletDataToRequest(FEtherlinkerReques
 	etherlinkerRequestData.walletAuthType = walletData.walletAuthType;
 
 	if (walletData.walletPath.IsEmpty()) {
-		etherlinkerRequestData.walletPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()).Append("EtherlinkerKeys/");
+
+		UEtherlinkerSettings* EtherlinkerSettings = GetMutableDefault<UEtherlinkerSettings>();
+		check(EtherlinkerSettings);
+
+		if (!EtherlinkerSettings->DefaultWalletPath.IsEmpty()) {
+			etherlinkerRequestData.walletPath = EtherlinkerSettings->DefaultWalletPath;
+		}
+		else {
+			etherlinkerRequestData.walletPath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()).Append("EtherlinkerKeys/");
+		}
+		
 	}
 	else {
 		etherlinkerRequestData.walletPath = walletData.walletPath;
