@@ -44,9 +44,6 @@
 - You are an enterprise developer and want to use it for *** (removed due to NDA)
 - You want to use some examples (not related to blockchain) from it in your projects
 
-**Supported platforms:** Windows, Mac, Android, iOS  
-**Supported engine versions:** 4.20, 4.21
-
 ### **Requirements** ###
 
 **To start using Etherlinker for UE4, you need:**
@@ -91,3 +88,6 @@ By default, all operations on the integration server generate signed transaction
 If you have remote integration server, then you should securely transfer wallet credentials to it from end-user PC. You can use SSL encryption or add an additional custom encryption level over it. However, many users may not want to expose their wallet credentials in such a manner, so it's not the best approach. In this case, it's better to create and manage separate wallets on your server and give users the ability to sign in to their accounts in order to use their in-game wallets. If it's required, they can transfer funds from other wallets to in-game wallets by using external tools and use them in your project. Remote wallets will help you to achieve this.  
 
 It's also possible to use both local and remote server in one application by specifying different server address for different purposes. For example, do all operations with funds on a local server, but execute some read-only contract methods on the server side.
+
+**Supported platforms:** Windows, Mac, Android, iOS  
+**Supported engine versions:** 4.20, 4.21

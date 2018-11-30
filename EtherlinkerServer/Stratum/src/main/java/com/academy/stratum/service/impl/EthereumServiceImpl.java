@@ -2,11 +2,12 @@ package com.academy.stratum.service.impl;
 
 import com.academy.contracts.MethodParamsTester;
 import com.academy.stratum.dto.EtherlinkerBatchRequestData;
+import com.academy.stratum.dto.EtherlinkerBatchResponseData;
 import com.academy.stratum.dto.EtherlinkerRequestData;
 import com.academy.stratum.dto.EtherlinkerResponseData;
-import com.academy.stratum.dto.EtherlinkerBatchResponseData;
 import com.academy.stratum.service.EthereumService;
 import com.academy.utils.AddressUtils;
+import com.academy.utils.ApplicationContextProvider;
 import com.academy.utils.RestException;
 import org.apache.commons.io.FilenameUtils;
 import org.bitcoinj.core.ECKey;
@@ -15,6 +16,7 @@ import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
@@ -68,12 +70,27 @@ public class EthereumServiceImpl implements EthereumService {
         }
     }
 
+    private String getWeb3jURL(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
+
+        Environment environment = ApplicationContextProvider.getApplicationContext().getEnvironment();
+
+        String URL;
+        if(environment.getProperty("etherlinker.use.geth.or.parity").equals("true")) {
+            URL = environment.getProperty("etherlinker.geth.or.parity.url");
+        } else {
+
+            if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("rinkeby.infura.io")) {
+                throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
+            }
+
+            URL = etherlinkerRequestData.getInfuraURL();
+        }
+
+        return URL;
+    }
+
     @Override
     public EtherlinkerResponseData transferEther(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
-
-        if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("rinkeby.infura.io")) {
-            throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
-        }
 
         String receiverWalletAddress = etherlinkerRequestData.getReceiverAddress();
         if(!AddressUtils.IsAddressValid(receiverWalletAddress)) {
@@ -81,7 +98,7 @@ public class EthereumServiceImpl implements EthereumService {
         }
         receiverWalletAddress = Keys.toChecksumAddress(receiverWalletAddress);
 
-        Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
+        Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
 
         Credentials wallet = loadCredentials(etherlinkerRequestData);
 
@@ -99,15 +116,13 @@ public class EthereumServiceImpl implements EthereumService {
 
         etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "transferEther");
 
+        web3j.shutdown();
+
         return etherlinkerResponseData;
     }
 
     @Override
     public EtherlinkerResponseData getBalance(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
-
-        if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("rinkeby.infura.io")) {
-            throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
-        }
 
         String walletAddress = etherlinkerRequestData.getWalletAddress();
         if(!AddressUtils.IsAddressValid(walletAddress)) {
@@ -115,7 +130,7 @@ public class EthereumServiceImpl implements EthereumService {
         }
         walletAddress = Keys.toChecksumAddress(walletAddress);
 
-        Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
+        Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
 
         EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
 
@@ -135,17 +150,15 @@ public class EthereumServiceImpl implements EthereumService {
 
         etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "getWalletBalance");
 
+        web3j.shutdown();
+
         return etherlinkerResponseData;
     }
 
     @Override
     public EtherlinkerResponseData deployContract(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
 
-        if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("rinkeby.infura.io")) {
-            throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
-        }
-
-        Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
+        Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
 
         Credentials wallet = loadCredentials(etherlinkerRequestData);
 
@@ -174,15 +187,13 @@ public class EthereumServiceImpl implements EthereumService {
 
         etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "deployContract");
 
+        web3j.shutdown();
+
         return etherlinkerResponseData;
     }
 
     @Override
     public EtherlinkerResponseData execContractMethod(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
-
-        if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("rinkeby.infura.io")) {
-            throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
-        }
 
         String contractAddress = etherlinkerRequestData.getContractAddress();
         if(!AddressUtils.IsAddressValid(contractAddress)) {
@@ -190,7 +201,7 @@ public class EthereumServiceImpl implements EthereumService {
         }
         contractAddress = Keys.toChecksumAddress(contractAddress);
 
-        Admin web3j = setUp(etherlinkerRequestData.getInfuraURL());
+        Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
 
         Credentials wallet = loadCredentials(etherlinkerRequestData);
 
@@ -379,6 +390,8 @@ public class EthereumServiceImpl implements EthereumService {
 
         // Enhance response with additional data
         etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "execContractMethod");
+
+        web3j.shutdown();
 
         return etherlinkerResponseData;
     }
