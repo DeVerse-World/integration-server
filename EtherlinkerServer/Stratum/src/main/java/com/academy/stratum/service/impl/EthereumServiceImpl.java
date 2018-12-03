@@ -322,14 +322,14 @@ public class EthereumServiceImpl implements EthereumService {
                             break;
                         }
                         case "Boolean": {
-                            parameters[i] = new Boolean(etherlinkerRequestData.getContractMethodParams().get(i));
+                            parameters[i] = Boolean.parseBoolean(etherlinkerRequestData.getContractMethodParams().get(i));
                             break;
                         }
                         case "Bytes": {
                             List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
                             byte[] booleanArrayParams = new byte[stringArrayParams.size()];
                             for (int j = 0; j < stringArrayParams.size(); j++) {
-                                booleanArrayParams[j] = new Byte(stringArrayParams.get(j).trim());
+                                booleanArrayParams[j] = Byte.parseByte(stringArrayParams.get(j).trim());
                             }
                             parameters[i] = booleanArrayParams;
                             break;
@@ -347,7 +347,7 @@ public class EthereumServiceImpl implements EthereumService {
                             List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
                             List<Boolean> booleanArrayParams = new ArrayList<>();
                             for (String stringValue : stringArrayParams) {
-                                booleanArrayParams.add(new Boolean(stringValue.trim()));
+                                booleanArrayParams.add(Boolean.parseBoolean(stringValue.trim()));
                             }
                             parameters[i] = booleanArrayParams;
                             break;

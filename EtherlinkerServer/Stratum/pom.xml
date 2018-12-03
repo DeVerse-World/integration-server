@@ -138,7 +138,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                    <source>1.8</source>
                     <excludePackageNames>com.academy.contracts</excludePackageNames>
                 </configuration>
             </plugin>

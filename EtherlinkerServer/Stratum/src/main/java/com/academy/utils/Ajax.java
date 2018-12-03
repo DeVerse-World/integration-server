@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Returns proper Ajax response from input data
  *
- * @author: Ruslan Nazirov
+ * @author Ruslan Nazirov
  */
 public class Ajax {
 

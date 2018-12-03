@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Ethereum address utils
  *
- * @author: Ruslan Nazirov
+ * @author Ruslan Nazirov
  */
 public class AddressUtils {
 
