@@ -50,14 +50,13 @@
 **To start using Etherlinker for UE4, you need:**
 
 - Unreal Engine 4.20 or above (Can be installed from Epic Games Launcher: https://www.epicgames.com/unrealtournament/download)
-- OpenJDK 11 - to compile and run integration server (https://jdk.java.net/11/).
-- Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.
+- OpenJDK 11 - to compile and run integration server (https://jdk.java.net/11/) - read F.A.Q for instructions.
+- Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server or use Geth/Parity for the same purposes.
 
 **If you want to add custom contracts, change plugin's or server code:**
 
 - Visual Studio 2017 or above (https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)
 - IntelliJ IDEA or similar IDE - to modify code of integration server.  
-- Set JAVA_HOME variable to the JDK 8 location in order to run maven (just search for "how to set JAVA_HOME variable in Windows/Linux/Mac OS).  
 
 **Additionally in production:**  
 
