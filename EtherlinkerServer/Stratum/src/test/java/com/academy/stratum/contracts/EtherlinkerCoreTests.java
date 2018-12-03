@@ -101,7 +101,7 @@ public class EtherlinkerCoreTests {
         }
     }
 
-    @Ignore
+    //@Ignore
     @SuppressWarnings("Duplicates")
     @Test
     public void deployContractTest() {
@@ -144,7 +144,7 @@ public class EtherlinkerCoreTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_execContractMethodTest");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("greet");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
 

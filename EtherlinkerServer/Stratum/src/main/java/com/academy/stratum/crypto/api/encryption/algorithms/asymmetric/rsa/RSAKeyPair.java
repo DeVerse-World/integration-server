@@ -2,13 +2,12 @@ package com.academy.stratum.crypto.api.encryption.algorithms.asymmetric.rsa;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import java.security.*;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 /**
  * Key pair for RSA algorithm
@@ -77,9 +76,8 @@ public class RSAKeyPair {
 	public static PublicKey getPublicKey(String publicKey) throws Exception {
 		try {
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-			BASE64Decoder b64Decoder = new BASE64Decoder();
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
-			EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64Decoder.decodeBuffer(publicKey));
+			EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey));
 			PublicKey key = keyFactory.generatePublic(publicKeySpec);
 			return key;
 		} catch (Exception e) {
@@ -93,8 +91,7 @@ public class RSAKeyPair {
 	 * @return key Encoded public key in string format
 	 */
 	public String getEncodedPublicKey() {
-		BASE64Encoder b64Encoder = new BASE64Encoder();
-		return b64Encoder.encode(publicKey.getEncoded());
+		return Base64.getEncoder().encodeToString(publicKey.getEncoded());
 	}
 
 	/**
@@ -114,9 +111,8 @@ public class RSAKeyPair {
 	public static PrivateKey getPrivateKey(String privateKey) throws Exception {
 		try {
 			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-			BASE64Decoder b64Decoder = new BASE64Decoder();
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
-			EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(b64Decoder.decodeBuffer(privateKey));
+			EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
 			PrivateKey key = keyFactory.generatePrivate(privateKeySpec);
 			return key;
 		} catch (Exception e) {
@@ -130,8 +126,7 @@ public class RSAKeyPair {
 	 * @return key Encoded private key in string format
 	 */
 	public String getEncodedPrivateKey() {
-		BASE64Encoder b64Encoder = new BASE64Encoder();
-		return b64Encoder.encode(privateKey.getEncoded());
+		return Base64.getEncoder().encodeToString(privateKey.getEncoded());
 	}
 
 	/**

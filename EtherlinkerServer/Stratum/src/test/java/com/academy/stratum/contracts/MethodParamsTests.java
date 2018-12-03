@@ -40,7 +40,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_string");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("stringTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -65,7 +65,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_number");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("intTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -90,7 +90,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_boolean");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("boolTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -115,7 +115,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_numberArray");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("intArrayTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -140,7 +140,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_multipleParams");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("multipleParamsTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -170,7 +170,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_stringArray");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("stringArrayTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -195,7 +195,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_boolArray");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("boolArrayTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -220,7 +220,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_byteArray");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("bytesArrayTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -245,7 +245,7 @@ public class MethodParamsTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_singleByte");
-        etherlinkerRequestData.setContractAddress("0x51e6f25d1e6a9ade27eaacb0c7dafc94e9dc63da");
+        etherlinkerRequestData.setContractAddress("0x0082ed8e7ac023db11bbe03dbbab4625caee0cae");
         etherlinkerRequestData.setContractMethodName("byteTest");
         etherlinkerRequestData.setContractName("com.academy.contracts.MethodParamsTester");
         ArrayList<String> contractMethodParams = new ArrayList<>();

@@ -15,10 +15,10 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 3.6.0.
+ * <p>Generated with web3j version 4.0.3.
  */
 public class ERC165Checker extends Contract {
-    private static final String BINARY = "604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582097afadc28758d29a7e575523fd1c9a271a85151e06ef1c8bab0e07ccbd06f4780029";
+    private static final String BINARY = "604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582039a912a7d6ad868de3c91e52913195fbf76e0aaf7bb9e55119227b212bfaf3ed0029";
 
     @Deprecated
     protected ERC165Checker(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
@@ -38,24 +38,6 @@ public class ERC165Checker extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(ERC165Checker.class, web3j, credentials, contractGasProvider, BINARY, "");
-    }
-
-    @Deprecated
-    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(ERC165Checker.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
-    }
-
-    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(ERC165Checker.class, web3j, transactionManager, contractGasProvider, BINARY, "");
-    }
-
-    @Deprecated
-    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(ERC165Checker.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
-    }
-
     @Deprecated
     public static ERC165Checker load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         return new ERC165Checker(contractAddress, web3j, credentials, gasPrice, gasLimit);
@@ -72,5 +54,23 @@ public class ERC165Checker extends Contract {
 
     public static ERC165Checker load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new ERC165Checker(contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(ERC165Checker.class, web3j, credentials, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(ERC165Checker.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(ERC165Checker.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<ERC165Checker> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(ERC165Checker.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 }

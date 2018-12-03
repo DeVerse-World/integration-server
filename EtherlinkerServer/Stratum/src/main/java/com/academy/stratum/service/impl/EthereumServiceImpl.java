@@ -75,7 +75,7 @@ public class EthereumServiceImpl implements EthereumService {
         Environment environment = ApplicationContextProvider.getApplicationContext().getEnvironment();
 
         String URL;
-        if(environment.getProperty("etherlinker.use.geth.or.parity").equals("true")) {
+        if (environment.getProperty("etherlinker.use.geth.or.parity").equals("true")) {
             URL = environment.getProperty("etherlinker.geth.or.parity.url");
         } else {
 
@@ -93,307 +93,328 @@ public class EthereumServiceImpl implements EthereumService {
     public EtherlinkerResponseData transferEther(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
 
         String receiverWalletAddress = etherlinkerRequestData.getReceiverAddress();
-        if(!AddressUtils.IsAddressValid(receiverWalletAddress)) {
+        if (!AddressUtils.IsAddressValid(receiverWalletAddress)) {
             throw new RestException("Invalid receiver address parameter");
         }
         receiverWalletAddress = Keys.toChecksumAddress(receiverWalletAddress);
 
+
         Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
+        try {
+            Credentials wallet = loadCredentials(etherlinkerRequestData);
 
-        Credentials wallet = loadCredentials(etherlinkerRequestData);
+            EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
 
-        EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
+            TransactionReceipt transactionReceipt = Transfer.sendFunds(
+                    web3j, wallet, receiverWalletAddress,
+                    new BigDecimal(etherlinkerRequestData.getEthAmountToSend()), Convert.Unit.ETHER).send();
 
-        TransactionReceipt transactionReceipt = Transfer.sendFunds(
-                web3j, wallet, receiverWalletAddress,
-                new BigDecimal(etherlinkerRequestData.getEthAmountToSend()), Convert.Unit.ETHER).send();
+            if (Optional.ofNullable(transactionReceipt).isPresent()) {
+                etherlinkerResponseData.setData("Transaction " + transactionReceipt.getTransactionHash() + " successfully mined");
+            } else {
+                throw new Exception("Failed to get transaction receipt for transferEther method");
+            }
 
-        if (Optional.ofNullable(transactionReceipt).isPresent()) {
-            etherlinkerResponseData.setData("Transaction " + transactionReceipt.getTransactionHash() + " successfully mined");
-        } else {
-            throw new Exception("Failed to get transaction receipt for transferEther method");
+            etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "transferEther");
+
+            return etherlinkerResponseData;
+
+        } finally {
+            if (web3j != null) {
+                web3j.shutdown();
+            }
         }
-
-        etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "transferEther");
-
-        web3j.shutdown();
-
-        return etherlinkerResponseData;
     }
 
     @Override
     public EtherlinkerResponseData getBalance(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
 
         String walletAddress = etherlinkerRequestData.getWalletAddress();
-        if(!AddressUtils.IsAddressValid(walletAddress)) {
+        if (!AddressUtils.IsAddressValid(walletAddress)) {
             throw new RestException("Invalid address parameter");
         }
         walletAddress = Keys.toChecksumAddress(walletAddress);
 
         Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
+        try {
+            EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
 
-        EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
+            EthGetBalance ethGetBalance = web3j
+                    .ethGetBalance(walletAddress, DefaultBlockParameterName.LATEST)
+                    .sendAsync()
+                    .get();
 
-        EthGetBalance ethGetBalance = web3j
-                .ethGetBalance(walletAddress, DefaultBlockParameterName.LATEST)
-                .sendAsync()
-                .get();
+            String balance;
+            if (etherlinkerRequestData.getConvertResultFromWeiToEth().equals("true")) {
+                balance = Convert.fromWei(ethGetBalance.getBalance().toString(), Convert.Unit.ETHER).toPlainString();
+            } else {
+                balance = ethGetBalance.getBalance().toString();
+            }
 
-        String balance;
-        if (etherlinkerRequestData.getConvertResultFromWeiToEth().equals("true")) {
-            balance = Convert.fromWei(ethGetBalance.getBalance().toString(), Convert.Unit.ETHER).toPlainString();
-        } else {
-            balance = ethGetBalance.getBalance().toString();
+            etherlinkerResponseData.setData(balance);
+
+            etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "getWalletBalance");
+
+            return etherlinkerResponseData;
+
+        } finally {
+            if (web3j != null) {
+                web3j.shutdown();
+            }
         }
-
-        etherlinkerResponseData.setData(balance);
-
-        etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "getWalletBalance");
-
-        web3j.shutdown();
-
-        return etherlinkerResponseData;
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public EtherlinkerResponseData deployContract(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
 
         Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
+        try {
 
-        Credentials wallet = loadCredentials(etherlinkerRequestData);
+            Credentials wallet = loadCredentials(etherlinkerRequestData);
 
-        Class<?> contractClass = Class.forName(etherlinkerRequestData.getContractName());
-        Method deployMethod = contractClass.getDeclaredMethod("deploy", Web3j.class, Credentials.class, BigInteger.class, BigInteger.class);
+            Class<?> contractClass = Class.forName(etherlinkerRequestData.getContractName());
+            Method deployMethod = contractClass.getDeclaredMethod("deploy", Web3j.class, Credentials.class, BigInteger.class, BigInteger.class);
 
-        BigInteger gasPrice = GAS_PRICE;
-        BigInteger gasLimit = GAS_LIMIT;
+            BigInteger gasPrice = GAS_PRICE;
+            BigInteger gasLimit = GAS_LIMIT;
 
-        if (!etherlinkerRequestData.getGasPrice().isEmpty()) {
-            gasPrice = new BigInteger(etherlinkerRequestData.getGasPrice());
+            if (!etherlinkerRequestData.getGasPrice().isEmpty()) {
+                gasPrice = new BigInteger(etherlinkerRequestData.getGasPrice());
+            }
+
+            if (!etherlinkerRequestData.getGasLimit().isEmpty()) {
+                gasLimit = new BigInteger(etherlinkerRequestData.getGasLimit());
+            }
+
+            Object contract = ((RemoteCall<MethodParamsTester>) deployMethod.invoke(null, web3j, wallet, gasPrice, gasLimit)).send();
+
+            Method getContractAddressMethod = contractClass.getSuperclass().getDeclaredMethod("getContractAddress");
+            String contractAddress = (String) getContractAddressMethod.invoke((Contract) contract);
+            LOG.info("Smart contract deployed to address " + contractAddress);
+
+            EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
+            etherlinkerResponseData.setData("Smart contract deployed to address " + contractAddress);
+
+            etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "deployContract");
+
+            return etherlinkerResponseData;
+
+        } finally {
+            if (web3j != null) {
+                web3j.shutdown();
+            }
         }
-
-        if (!etherlinkerRequestData.getGasLimit().isEmpty()) {
-            gasLimit = new BigInteger(etherlinkerRequestData.getGasLimit());
-        }
-
-        Object contract = ((RemoteCall<MethodParamsTester>) deployMethod.invoke(null, web3j, wallet, gasPrice, gasLimit)).send();
-
-        Method getContractAddressMethod = contractClass.getSuperclass().getDeclaredMethod("getContractAddress");
-        String contractAddress = (String) getContractAddressMethod.invoke((Contract) contract);
-        LOG.info("Smart contract deployed to address " + contractAddress);
-
-        EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
-        etherlinkerResponseData.setData("Smart contract deployed to address " + contractAddress);
-
-        etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "deployContract");
-
-        web3j.shutdown();
-
-        return etherlinkerResponseData;
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public EtherlinkerResponseData execContractMethod(EtherlinkerRequestData etherlinkerRequestData) throws Exception {
 
         String contractAddress = etherlinkerRequestData.getContractAddress();
-        if(!AddressUtils.IsAddressValid(contractAddress)) {
+        if (!AddressUtils.IsAddressValid(contractAddress)) {
             throw new RestException("Invalid contract address parameter");
         }
         contractAddress = Keys.toChecksumAddress(contractAddress);
 
         Admin web3j = setUp(getWeb3jURL(etherlinkerRequestData));
+        try {
+            Credentials wallet = loadCredentials(etherlinkerRequestData);
 
-        Credentials wallet = loadCredentials(etherlinkerRequestData);
+            Class<?> contractClass = Class.forName(etherlinkerRequestData.getContractName());
+            Method loadMethod = contractClass.getDeclaredMethod("load", String.class, Web3j.class, Credentials.class, BigInteger.class, BigInteger.class);
 
-        Class<?> contractClass = Class.forName(etherlinkerRequestData.getContractName());
-        Method loadMethod = contractClass.getDeclaredMethod("load", String.class, Web3j.class, Credentials.class, BigInteger.class, BigInteger.class);
+            BigInteger gasPrice = GAS_PRICE;
+            BigInteger gasLimit = GAS_LIMIT;
 
-        BigInteger gasPrice = GAS_PRICE;
-        BigInteger gasLimit = GAS_LIMIT;
-
-        if (!etherlinkerRequestData.getGasPrice().isEmpty()) {
-            gasPrice = new BigInteger(etherlinkerRequestData.getGasPrice());
-        }
-
-        if (!etherlinkerRequestData.getGasLimit().isEmpty()) {
-            gasLimit = new BigInteger(etherlinkerRequestData.getGasLimit());
-        }
-
-        Object contract = loadMethod.invoke(null, contractAddress, web3j, wallet, gasPrice, gasLimit);
-
-        EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
-
-        // Process parameters and parameter types
-        Object[] parameters = new Object[1];
-        Class[] parameterTypes = new Class[1];
-        if (etherlinkerRequestData.getContractMethodParams() != null && etherlinkerRequestData.getContractMethodParams().size() >= 0) {
-
-            parameterTypes = new Class[etherlinkerRequestData.getContractMethodParamTypes().size()];
-            for (int i = 0; i < etherlinkerRequestData.getContractMethodParamTypes().size(); i++) {
-                switch (etherlinkerRequestData.getContractMethodParamTypes().get(i)) {
-                    case "String": {
-                        parameterTypes[i] = String.class;
-                        break;
-                    }
-                    case "Address": {
-                        parameterTypes[i] = String.class;
-                        break;
-                    }
-                    case "Number": {
-                        parameterTypes[i] = BigInteger.class;
-                        break;
-                    }
-                    case "ETH": {
-                        parameterTypes[i] = BigInteger.class;
-                        break;
-                    }
-                    case "Boolean": {
-                        parameterTypes[i] = Boolean.class;
-                        break;
-                    }
-                    case "Bytes": {
-                        parameterTypes[i] = byte[].class;
-                        break;
-                    }
-                    case "StringArray": {
-                        parameterTypes[i] = List.class;
-                        break;
-                    }
-                    case "BooleanArray": {
-                        parameterTypes[i] = List.class;
-                        break;
-                    }
-                    case "NumberArray": {
-                        parameterTypes[i] = List.class;
-                        break;
-                    }
-                    default: {
-                        parameterTypes[i] = String.class;
-                        break;
-                    }
-                }
+            if (!etherlinkerRequestData.getGasPrice().isEmpty()) {
+                gasPrice = new BigInteger(etherlinkerRequestData.getGasPrice());
             }
 
-            parameters = new Object[etherlinkerRequestData.getContractMethodParams().size()];
-            for (int i = 0; i < etherlinkerRequestData.getContractMethodParams().size(); i++) {
-                switch (etherlinkerRequestData.getContractMethodParamTypes().get(i)) {
-                    case "String": {
-                        parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
-                        break;
-                    }
-                    case "Address": {
-                        parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
-                        if(!AddressUtils.IsAddressValid((String)parameters[i])) {
-                            throw new RestException("Invalid address parameter");
-                        }
-                        parameters[i] = Keys.toChecksumAddress((String)parameters[i]);
-                        break;
-                    }
-                    case "Number": {
-                        BigInteger numberParam;
-                        if(etherlinkerRequestData.getContractMethodParams().get(i).contains("EtherToWei")) {
-                            numberParam = Convert.toWei(etherlinkerRequestData.getContractMethodParams().get(i).split(" ")[0], Convert.Unit.ETHER).toBigIntegerExact();
-                        } else {
-                            numberParam = new BigInteger(etherlinkerRequestData.getContractMethodParams().get(i));
-                        }
+            if (!etherlinkerRequestData.getGasLimit().isEmpty()) {
+                gasLimit = new BigInteger(etherlinkerRequestData.getGasLimit());
+            }
 
-                        parameters[i] = numberParam;
-                        break;
-                    }
-                    case "ETH": {
-                        BigInteger numberParam = Convert.toWei(etherlinkerRequestData.getContractMethodParams().get(i), Convert.Unit.ETHER).toBigIntegerExact();
-                        parameters[i] = numberParam;
-                        break;
-                    }
-                    case "Boolean": {
-                        parameters[i] = new Boolean(etherlinkerRequestData.getContractMethodParams().get(i));
-                        break;
-                    }
-                    case "Bytes": {
-                        List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
-                        byte[] booleanArrayParams = new byte[stringArrayParams.size()];
-                        for (int j = 0; j < stringArrayParams.size(); j++) {
-                            booleanArrayParams[j] = new Byte(stringArrayParams.get(j).trim());
+            Object contract = loadMethod.invoke(null, contractAddress, web3j, wallet, gasPrice, gasLimit);
+
+            EtherlinkerResponseData etherlinkerResponseData = new EtherlinkerResponseData();
+
+            // Process parameters and parameter types
+            Object[] parameters = new Object[1];
+            Class[] parameterTypes = new Class[1];
+            if (etherlinkerRequestData.getContractMethodParams() != null && etherlinkerRequestData.getContractMethodParams().size() >= 0) {
+
+                parameterTypes = new Class[etherlinkerRequestData.getContractMethodParamTypes().size()];
+                for (int i = 0; i < etherlinkerRequestData.getContractMethodParamTypes().size(); i++) {
+                    switch (etherlinkerRequestData.getContractMethodParamTypes().get(i)) {
+                        case "String": {
+                            parameterTypes[i] = String.class;
+                            break;
                         }
-                        parameters[i] = booleanArrayParams;
-                        break;
-                    }
-                    case "StringArray": {
-                        // TODO: fix org.web3j.tx.exceptions.ContractCallException: Empty value (0x) returned from contract
-                        List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
-                        for (int j = 0; j < stringArrayParams.size(); j++) {
-                            stringArrayParams.set(j, stringArrayParams.get(j).trim());
+                        case "Address": {
+                            parameterTypes[i] = String.class;
+                            break;
                         }
-                        parameters[i] = stringArrayParams;
-                        break;
-                    }
-                    case "BooleanArray": {
-                        List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
-                        List<Boolean> booleanArrayParams = new ArrayList<>();
-                        for (String stringValue : stringArrayParams) {
-                            booleanArrayParams.add(new Boolean(stringValue.trim()));
+                        case "Number": {
+                            parameterTypes[i] = BigInteger.class;
+                            break;
                         }
-                        parameters[i] = booleanArrayParams;
-                        break;
+                        case "ETH": {
+                            parameterTypes[i] = BigInteger.class;
+                            break;
+                        }
+                        case "Boolean": {
+                            parameterTypes[i] = Boolean.class;
+                            break;
+                        }
+                        case "Bytes": {
+                            parameterTypes[i] = byte[].class;
+                            break;
+                        }
+                        case "StringArray": {
+                            parameterTypes[i] = List.class;
+                            break;
+                        }
+                        case "BooleanArray": {
+                            parameterTypes[i] = List.class;
+                            break;
+                        }
+                        case "NumberArray": {
+                            parameterTypes[i] = List.class;
+                            break;
+                        }
+                        default: {
+                            parameterTypes[i] = String.class;
+                            break;
+                        }
                     }
-                    case "NumberArray": {
-                        List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
-                        List<BigInteger> numberArrayParams = new ArrayList<>();
-                        for (String stringValue : stringArrayParams) {
-                            try {
-                                numberArrayParams.add(new BigInteger(stringValue.trim()));
-                            } catch (NumberFormatException nfe) {
-                                throw new RestException("Can't process number array input parameter. Some values aren't numbers.");
+                }
+
+                parameters = new Object[etherlinkerRequestData.getContractMethodParams().size()];
+                for (int i = 0; i < etherlinkerRequestData.getContractMethodParams().size(); i++) {
+                    switch (etherlinkerRequestData.getContractMethodParamTypes().get(i)) {
+                        case "String": {
+                            parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
+                            break;
+                        }
+                        case "Address": {
+                            parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
+                            if (!AddressUtils.IsAddressValid((String) parameters[i])) {
+                                throw new RestException("Invalid address parameter");
                             }
+                            parameters[i] = Keys.toChecksumAddress((String) parameters[i]);
+                            break;
                         }
-                        parameters[i] = numberArrayParams;
-                        break;
-                    }
-                    default: {
-                        parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
-                        break;
+                        case "Number": {
+                            BigInteger numberParam;
+                            if (etherlinkerRequestData.getContractMethodParams().get(i).contains("EtherToWei")) {
+                                numberParam = Convert.toWei(etherlinkerRequestData.getContractMethodParams().get(i).split(" ")[0], Convert.Unit.ETHER).toBigIntegerExact();
+                            } else {
+                                numberParam = new BigInteger(etherlinkerRequestData.getContractMethodParams().get(i));
+                            }
+
+                            parameters[i] = numberParam;
+                            break;
+                        }
+                        case "ETH": {
+                            BigInteger numberParam = Convert.toWei(etherlinkerRequestData.getContractMethodParams().get(i), Convert.Unit.ETHER).toBigIntegerExact();
+                            parameters[i] = numberParam;
+                            break;
+                        }
+                        case "Boolean": {
+                            parameters[i] = new Boolean(etherlinkerRequestData.getContractMethodParams().get(i));
+                            break;
+                        }
+                        case "Bytes": {
+                            List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
+                            byte[] booleanArrayParams = new byte[stringArrayParams.size()];
+                            for (int j = 0; j < stringArrayParams.size(); j++) {
+                                booleanArrayParams[j] = new Byte(stringArrayParams.get(j).trim());
+                            }
+                            parameters[i] = booleanArrayParams;
+                            break;
+                        }
+                        case "StringArray": {
+                            // TODO: fix org.web3j.tx.exceptions.ContractCallException: Empty value (0x) returned from contract
+                            List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
+                            for (int j = 0; j < stringArrayParams.size(); j++) {
+                                stringArrayParams.set(j, stringArrayParams.get(j).trim());
+                            }
+                            parameters[i] = stringArrayParams;
+                            break;
+                        }
+                        case "BooleanArray": {
+                            List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
+                            List<Boolean> booleanArrayParams = new ArrayList<>();
+                            for (String stringValue : stringArrayParams) {
+                                booleanArrayParams.add(new Boolean(stringValue.trim()));
+                            }
+                            parameters[i] = booleanArrayParams;
+                            break;
+                        }
+                        case "NumberArray": {
+                            List<String> stringArrayParams = new ArrayList<>(Arrays.asList(etherlinkerRequestData.getContractMethodParams().get(i).split(",")));
+                            List<BigInteger> numberArrayParams = new ArrayList<>();
+                            for (String stringValue : stringArrayParams) {
+                                try {
+                                    numberArrayParams.add(new BigInteger(stringValue.trim()));
+                                } catch (NumberFormatException nfe) {
+                                    throw new RestException("Can't process number array input parameter. Some values aren't numbers.");
+                                }
+                            }
+                            parameters[i] = numberArrayParams;
+                            break;
+                        }
+                        default: {
+                            parameters[i] = etherlinkerRequestData.getContractMethodParams().get(i);
+                            break;
+                        }
                     }
                 }
+
             }
 
-        }
-
-        // Send ethereum transaction and waiting for the result
-        Method getNameMethod;
-        Object result;
-        if (etherlinkerRequestData.getContractMethodParams() == null || etherlinkerRequestData.getContractMethodParams().size() == 0) {
-            getNameMethod = contract.getClass().getMethod(etherlinkerRequestData.getContractMethodName());
-            result = ((RemoteCall) getNameMethod.invoke(contract)).send();
-        } else {
-            getNameMethod = contract.getClass().getMethod(etherlinkerRequestData.getContractMethodName(), parameterTypes);
-            result = ((RemoteCall) getNameMethod.invoke(contract, parameters)).send();
-        }
-
-        // Process result
-        if (result instanceof TransactionReceipt) {
-            if (Optional.ofNullable(result).isPresent()) {
-                etherlinkerResponseData.setData("Transaction " + ((TransactionReceipt) result).getTransactionHash() + " successfully mined");
+            // Send ethereum transaction and waiting for the result
+            Method getNameMethod;
+            Object result;
+            if (etherlinkerRequestData.getContractMethodParams() == null || etherlinkerRequestData.getContractMethodParams().size() == 0) {
+                getNameMethod = contract.getClass().getMethod(etherlinkerRequestData.getContractMethodName());
+                result = ((RemoteCall) getNameMethod.invoke(contract)).send();
             } else {
-                throw new Exception("Failed to get transaction receipt for transferEther method");
+                getNameMethod = contract.getClass().getMethod(etherlinkerRequestData.getContractMethodName(), parameterTypes);
+                result = ((RemoteCall) getNameMethod.invoke(contract, parameters)).send();
             }
-        } else if (result instanceof BigInteger && etherlinkerRequestData.getConvertResultFromWeiToEth().equals("true")) {
-            etherlinkerResponseData.setData(Convert.fromWei(result.toString(), Convert.Unit.ETHER).toPlainString());
-        } else if (result instanceof byte[]) {
-            StringBuilder resultData = new StringBuilder();
-            for (int i = 0; i < ((byte[]) result).length; i++) {
-                resultData.append(((byte[]) result)[i] + " ");
+
+            // Process result
+            if (result instanceof TransactionReceipt) {
+                if (Optional.ofNullable(result).isPresent()) {
+                    etherlinkerResponseData.setData("Transaction " + ((TransactionReceipt) result).getTransactionHash() + " successfully mined");
+                } else {
+                    throw new Exception("Failed to get transaction receipt for transferEther method");
+                }
+            } else if (result instanceof BigInteger && etherlinkerRequestData.getConvertResultFromWeiToEth().equals("true")) {
+                etherlinkerResponseData.setData(Convert.fromWei(result.toString(), Convert.Unit.ETHER).toPlainString());
+            } else if (result instanceof byte[]) {
+                StringBuilder resultData = new StringBuilder();
+                for (int i = 0; i < ((byte[]) result).length; i++) {
+                    resultData.append(((byte[]) result)[i] + " ");
+                }
+                etherlinkerResponseData.setData(resultData.toString().trim());
+            } else {
+                etherlinkerResponseData.setData(result.toString());
             }
-            etherlinkerResponseData.setData(resultData.toString().trim());
-        } else {
-            etherlinkerResponseData.setData(result.toString());
+
+            // Enhance response with additional data
+            etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "execContractMethod");
+
+            return etherlinkerResponseData;
+
+        } finally {
+            if (web3j != null) {
+                web3j.shutdown();
+            }
         }
 
-        // Enhance response with additional data
-        etherlinkerResponseData = enhanceResponseData(etherlinkerResponseData, etherlinkerRequestData, "execContractMethod");
-
-        web3j.shutdown();
-
-        return etherlinkerResponseData;
     }
 
     @Override
@@ -406,7 +427,7 @@ public class EthereumServiceImpl implements EthereumService {
         etherlinkerBatchResponseData.setData("Operation completed");
         etherlinkerBatchResponseData.setBatchResponseDataVersion("1");
 
-        for(EtherlinkerRequestData etherlinkerRequestData : etherlinkerBatchRequestData.getEtherlinkerRequestDataList()) {
+        for (EtherlinkerRequestData etherlinkerRequestData : etherlinkerBatchRequestData.getEtherlinkerRequestDataList()) {
             switch (etherlinkerRequestData.getOperationType()) {
                 case "getWalletBalance": {
                     etherlinkerBatchResponseData.getEtherlinkerResponseDataList().add(getBalance(etherlinkerRequestData));
@@ -438,7 +459,7 @@ public class EthereumServiceImpl implements EthereumService {
 
         path = FilenameUtils.getFullPath(path);
 
-        if(path == null || path.isEmpty()) {
+        if (path == null || path.isEmpty()) {
             throw new Exception("Failed to get wallet path");
         }
 

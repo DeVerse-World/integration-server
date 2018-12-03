@@ -60,7 +60,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_buyEtherGaldToken");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("buyToken");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -86,7 +86,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_checkEtherGaldToken");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("checkTokenBalance");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         etherlinkerRequestData.setConvertResultFromWeiToEth("false");
@@ -109,7 +109,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_addPremiumSubscriptionType");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("addPremiumSubscriptionType");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -138,7 +138,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_buyPremiumSubscription");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("buyPremiumSubscription");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -167,7 +167,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_grantPremiumSubscription");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("grantPremiumSubscription");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -198,7 +198,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_checkPremiumSubscription");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("checkPremiumSubscription");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -228,7 +228,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_editPremiumSubscriptionType");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("editPremiumSubscriptionType");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -257,7 +257,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_deletePremiumSubscriptionType");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("deletePremiumSubscriptionType");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -283,7 +283,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getPremiumSubscriptionPricePerDay");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("getPremiumSubscriptionPricePerDay");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         etherlinkerRequestData.setConvertResultFromWeiToEth("false");
@@ -312,7 +312,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_addPremiumItem");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("addPremiumItem");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -341,7 +341,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_buyPremiumItem");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("buyPremiumItem");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -368,7 +368,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_grantPremiumItem");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("grantPremiumItem");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -397,7 +397,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_checkPremiumItem");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("checkPremiumItem");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -427,7 +427,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_editPremiumItem");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("editPremiumItem");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -456,7 +456,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_deletePremiumItem");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("deletePremiumItem");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -483,7 +483,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_batchAddPremiumItems");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("batchAddPremiumItems");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -512,7 +512,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_batchEditPremiumItems");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("batchEditPremiumItems");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -541,7 +541,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_batchDeletePremiumItems");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("batchDeletePremiumItems");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -568,7 +568,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_batchAddPremiumSubscriptionTypes");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("batchAddPremiumSubscriptionTypes");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -597,7 +597,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_batchEditPremiumSubscriptionTypes");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("batchEditPremiumSubscriptionTypes");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -626,7 +626,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_batchDeletePremiumSubscriptionTypes");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("batchDeletePremiumSubscriptionTypes");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -652,7 +652,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getPremiumItemPrice");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("getPremiumItemPrice");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         etherlinkerRequestData.setConvertResultFromWeiToEth("false");
@@ -681,7 +681,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_withdrawFunds");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("withdrawFunds");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
 
@@ -702,7 +702,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_setTokenPrice");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("setTokenPrice");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -727,7 +727,7 @@ public class EtherGaldTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getTokenPrice");
-        etherlinkerRequestData.setContractAddress("0x978d00879d58cf93f021a70cf4b54005a4999337");
+        etherlinkerRequestData.setContractAddress("0xbac28cf9708fd67cca5f58f0893cbd9815706529");
         etherlinkerRequestData.setContractMethodName("getTokenPrice");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherGaldToken");
         etherlinkerRequestData.setConvertResultFromWeiToEth("true");

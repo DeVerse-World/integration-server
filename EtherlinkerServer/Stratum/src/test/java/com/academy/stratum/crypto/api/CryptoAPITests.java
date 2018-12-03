@@ -45,6 +45,7 @@ public class CryptoAPITests {
     private static final Logger LOG = LoggerFactory.getLogger(CryptoAPITests.class);
 
     @Test
+    @SuppressWarnings("Duplicates")
     public void testCryptoAPI() {
         try {
 
