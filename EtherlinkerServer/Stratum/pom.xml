@@ -92,7 +92,7 @@
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
-            <version>4.0.3</version>
+            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.bitcoinj</groupId>
@@ -144,7 +144,7 @@
             <plugin>
                 <groupId>org.web3j</groupId>
                 <artifactId>web3j-maven-plugin</artifactId>
-                <version>4.0.3</version>
+                <version>4.1.0</version>
                 <configuration>
                     <packageName>com.academy.contracts</packageName>
                     <sourceDestination>src/main/java/</sourceDestination>

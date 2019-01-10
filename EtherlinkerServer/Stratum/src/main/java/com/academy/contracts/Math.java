@@ -15,10 +15,10 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.0.3.
+ * <p>Generated with web3j version 4.1.0.
  */
 public class Math extends Contract {
-    private static final String BINARY = "604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582048ce70a3b6360877c97fd3b1e51bd3b2ad4aa1cb6a718acc402bf94b31232ad40029";
+    private static final String BINARY = "604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582086cb8107dd2570b13f1f79b2e93b116f51314ba71bd1acc0aef7b0982ab6c9420029";
 
     @Deprecated
     protected Math(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
