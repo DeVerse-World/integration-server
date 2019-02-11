@@ -79,7 +79,7 @@ public class EthereumServiceImpl implements EthereumService {
             URL = environment.getProperty("etherlinker.geth.or.parity.url");
         } else {
 
-            if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("rinkeby.infura.io")) {
+            if (etherlinkerRequestData.getInfuraURL().isEmpty() || !etherlinkerRequestData.getInfuraURL().contains("infura.io")) {
                 throw new Exception("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
             }
 
