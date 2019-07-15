@@ -1,3 +1,5 @@
+// Copyright 2019 Ruslan Nazirov. All Rights Reserved.
+
 #pragma once
 
 #include "EtherlinkerTypes.generated.h"

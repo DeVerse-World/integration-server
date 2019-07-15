@@ -1,3 +1,5 @@
+// Copyright 2019 Ruslan Nazirov. All Rights Reserved.
+
 #include "Etherlinker.h"
 #include "EtherlinkerSettings.h"
 #include "ISettingsModule.h"

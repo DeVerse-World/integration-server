@@ -1,3 +1,5 @@
+// Copyright 2019 Ruslan Nazirov. All Rights Reserved.
+
 #include "EtherlinkerCommands.h"
 
 #define LOCTEXT_NAMESPACE "FEtherlinkerModule"

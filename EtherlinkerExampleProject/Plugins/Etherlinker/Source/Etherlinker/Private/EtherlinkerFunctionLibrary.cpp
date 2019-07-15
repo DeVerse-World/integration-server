@@ -1,3 +1,5 @@
+// Copyright 2019 Ruslan Nazirov. All Rights Reserved.
+
 #include "EtherlinkerFunctionLibrary.h"
 #include "EtherlinkerSettings.h"
 #include "Engine/Engine.h"

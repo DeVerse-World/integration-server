@@ -1,3 +1,5 @@
+// Copyright 2019 Ruslan Nazirov. All Rights Reserved.
+
 #include "EtherlinkerEditor.h"
 #include "EtherlinkerStyle.h"
 #include "EtherlinkerCommands.h"

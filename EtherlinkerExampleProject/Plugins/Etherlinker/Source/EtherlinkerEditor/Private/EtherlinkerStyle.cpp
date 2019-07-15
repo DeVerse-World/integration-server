@@ -1,3 +1,5 @@
+// Copyright 2019 Ruslan Nazirov. All Rights Reserved.
+
 #include "EtherlinkerStyle.h"
 #include "EtherlinkerEditor.h"
 #include "Framework/Application/SlateApplication.h"
