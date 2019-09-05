@@ -24,7 +24,7 @@
 - Custom solidity contracts support
 - ERC20 token contract template with Premium Items and Subscriptions support
 - ERC721 token contract template to make unique in-game entities, like pets
-- Donations contract template - raise funds for your projects without paying commissions to third party providers
+- Donations contract template
 - Execute multiple operations on Ethereum blockchain from UE4 with a single batch request
 - Lots of template widgets (compatible with VR and multiplayer) to speed up your development
 - Lots of ways to create or load Ethereum wallets.
