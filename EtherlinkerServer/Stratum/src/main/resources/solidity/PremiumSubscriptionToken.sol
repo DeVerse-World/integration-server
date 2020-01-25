@@ -1,9 +1,9 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
-import "./utils/SafeMath.sol";
-import "./ERC20/ERC20Burnable.sol";
-import "./utils/Ownable.sol";
+import "./math/SafeMath.sol";
+import "./token/ERC20/ERC20Burnable.sol";
+import "./ownership/Ownable.sol";
 import "./utils/StringUtils.sol";
 /**
  * @title Premium Subscription Token
@@ -52,7 +52,7 @@ contract PremiumSubscriptionToken is ERC20Burnable, Ownable, StringUtils {
      * @param _premiumSubscriptionTypeIds Ids of the new subscription types
      * @param _premiumSubscriptionPricesPerDay Prices per day of the new subscription types
      */
-    function batchAddPremiumSubscriptionTypes(uint256[] _premiumSubscriptionTypeIds, uint256[] _premiumSubscriptionPricesPerDay) external onlyOwner {
+    function batchAddPremiumSubscriptionTypes(uint256[] calldata _premiumSubscriptionTypeIds, uint256[] calldata _premiumSubscriptionPricesPerDay) external onlyOwner {
 
         require(_premiumSubscriptionTypeIds.length == _premiumSubscriptionPricesPerDay.length);
 
@@ -79,7 +79,7 @@ contract PremiumSubscriptionToken is ERC20Burnable, Ownable, StringUtils {
      * @param _premiumSubscriptionTypeIds Ids of the existing subscription types
      * @param _premiumSubscriptionPricesPerDay Prices per day of the existing subscription types to change
      */
-    function batchEditPremiumSubscriptionTypes(uint256[] _premiumSubscriptionTypeIds, uint256[] _premiumSubscriptionPricesPerDay) external onlyOwner {
+    function batchEditPremiumSubscriptionTypes(uint256[] calldata _premiumSubscriptionTypeIds, uint256[] calldata _premiumSubscriptionPricesPerDay) external onlyOwner {
 
         require(_premiumSubscriptionTypeIds.length == _premiumSubscriptionPricesPerDay.length);
 
@@ -103,7 +103,7 @@ contract PremiumSubscriptionToken is ERC20Burnable, Ownable, StringUtils {
      * @dev Delete existing premium subscription types in batch
      * @param _premiumSubscriptionTypeIds Ids of the existing subscription types
      */
-    function batchDeletePremiumSubscriptionTypes(uint256[] _premiumSubscriptionTypeIds) external onlyOwner {
+    function batchDeletePremiumSubscriptionTypes(uint256[] calldata _premiumSubscriptionTypeIds) external onlyOwner {
         for (uint i=0; i<_premiumSubscriptionTypeIds.length; i++) {
             delete premiumSubscriptionTypes[_premiumSubscriptionTypeIds[i]];
             emit DeletePremiumSubscriptionTypeEvent(_premiumSubscriptionTypeIds[i]);

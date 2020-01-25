@@ -1,8 +1,8 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
-import "./utils/SafeMath.sol";
-import "./ERC20/ERC20Mintable.sol";
-import "./ERC20/ERC20Burnable.sol";
+import "./math/SafeMath.sol";
+import "./token/ERC20/ERC20Mintable.sol";
+import "./token/ERC20/ERC20Burnable.sol";
 import "./PremiumSubscriptionToken.sol";
 import "./PremiumItemToken.sol";
 
@@ -27,7 +27,8 @@ contract EtherGaldToken is ERC20Mintable, PremiumSubscriptionToken, PremiumItemT
      */
     function withdrawFunds() public onlyOwner {
         uint256 balance = address(this).balance;
-        owner.transfer(address(this).balance);
+        address payable ownerPayableAddress = ownerPayable();
+        ownerPayableAddress.transfer(address(this).balance);
         emit Withdrawn(balance);
     }
 

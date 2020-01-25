@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 /**
@@ -11,7 +11,7 @@ contract MethodParamsTester {
      * @dev Basic method execution test
      * @return string with pre-defined value
      */
-    function greet() public pure returns (string) {
+    function greet() public pure returns (string memory) {
         return "Hello Ethereum Blockchain!";
     }
 
@@ -56,7 +56,7 @@ contract MethodParamsTester {
      * @param inputValue array parameter
      * @return same value as in input parameter
      */
-    function intArrayTest(int[] inputValue) public pure returns(int[]) {
+    function intArrayTest(int[] memory inputValue) public pure returns(int[] memory) {
         return inputValue;
     }
 
@@ -65,7 +65,7 @@ contract MethodParamsTester {
      * @param inputValue array parameter
      * @return same value as in input parameter
      */
-    function boolArrayTest(bool[] inputValue) public pure returns(bool[]) {
+    function boolArrayTest(bool[] memory inputValue) public pure returns(bool[] memory) {
         return inputValue;
     }
 
@@ -74,9 +74,9 @@ contract MethodParamsTester {
      * @param inputValue array parameter
      * @return same value as in input parameter
      */
-    function stringArrayTest(string[] inputValue) public pure returns(string)
+    function stringArrayTest(string[] memory inputValue) public pure returns(string memory)
     {
-        if(keccak256(inputValue[0]) == keccak256("A1")) {
+        if(keccak256(abi.encode(inputValue[0])) == keccak256(abi.encode("A1"))) {
             return string(abi.encodePacked("test1", "test2", "test3"));
         } else {
             return string(abi.encodePacked("Something", "Went", "Wrong"));
@@ -88,7 +88,7 @@ contract MethodParamsTester {
      * @param inputValue parameter
      * @return same value as in input parameter
      */
-    function bytesArrayTest(bytes inputValue) public pure returns(bytes) {
+    function bytesArrayTest(bytes memory inputValue) public pure returns(bytes memory) {
         return inputValue;
     }
 
@@ -106,7 +106,7 @@ contract MethodParamsTester {
      * @param inputValue parameter
      * @return same value as in input parameter
      */
-    function stringTest(string inputValue) public pure returns(string) {
+    function stringTest(string memory inputValue) public pure returns(string memory) {
         return inputValue;
     }
 
@@ -135,7 +135,7 @@ contract MethodParamsTester {
      * @param inputValue3 string parameter
      * @return string, which depends on input parameter
      */
-    function multipleParamsTest(int inputValue1, int inputValue2, string inputValue3) public pure returns(string) {
+    function multipleParamsTest(int inputValue1, int inputValue2, string memory inputValue3) public pure returns(string memory) {
         if(inputValue1 > inputValue2) {
             return inputValue3;
         } else {

@@ -9,6 +9,7 @@ import org.web3j.abi.datatypes.Type;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
@@ -21,10 +22,11 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.1.0.
+ * <p>Generated with web3j version 4.5.11.
  */
+@SuppressWarnings("rawtypes")
 public class ERC721Holder extends Contract {
-    private static final String BINARY = "608060405234801561001057600080fd5b5061014b806100206000396000f3006080604052600436106100405763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663150b7a028114610045575b600080fd5b34801561005157600080fd5b50604080516020601f6064356004818101359283018490048402850184019095528184526100c19473ffffffffffffffffffffffffffffffffffffffff81358116956024803590921695604435953695608494019181908401838280828437509497506100f69650505050505050565b604080517fffffffff000000000000000000000000000000000000000000000000000000009092168252519081900360200190f35b7f150b7a02000000000000000000000000000000000000000000000000000000009493505050505600a165627a7a7230582017b3d9830a165852f30728c9a62c04efd9afa024a0e540276dfa8dd55b2795250029";
+    public static final String BINARY = "608060405234801561001057600080fd5b50610152806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063150b7a0214610030575b600080fd5b6100f66004803603608081101561004657600080fd5b6001600160a01b0382358116926020810135909116916040820135919081019060808101606082013564010000000081111561008157600080fd5b82018360208201111561009357600080fd5b803590602001918460018302840111640100000000831117156100b557600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610113945050505050565b604080516001600160e01b03199092168252519081900360200190f35b600160e11b630a85bd010294935050505056fea165627a7a72305820e30b3435fa9e0093a96e5c81ed86e87cda15c7f871586fb8dd75fe943da509990029";
 
     public static final String FUNC_ONERC721RECEIVED = "onERC721Received";
 
@@ -46,11 +48,11 @@ public class ERC721Holder extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public RemoteCall<TransactionReceipt> onERC721Received(String param0, String param1, BigInteger param2, byte[] param3) {
+    public RemoteFunctionCall<TransactionReceipt> onERC721Received(String param0, String param1, BigInteger param2, byte[] param3) {
         final Function function = new Function(
                 FUNC_ONERC721RECEIVED, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(param0), 
-                new org.web3j.abi.datatypes.Address(param1), 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, param0), 
+                new org.web3j.abi.datatypes.Address(160, param1), 
                 new org.web3j.abi.datatypes.generated.Uint256(param2), 
                 new org.web3j.abi.datatypes.DynamicBytes(param3)), 
                 Collections.<TypeReference<?>>emptyList());

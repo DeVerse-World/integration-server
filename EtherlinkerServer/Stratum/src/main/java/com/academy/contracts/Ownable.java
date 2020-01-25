@@ -9,6 +9,7 @@ import java.util.List;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
@@ -16,7 +17,9 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.BaseEventResponse;
 import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
@@ -30,20 +33,21 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.1.0.
+ * <p>Generated with web3j version 4.5.11.
  */
+@SuppressWarnings("rawtypes")
 public class Ownable extends Contract {
-    private static final String BINARY = "608060405234801561001057600080fd5b5060008054600160a060020a0319163317905561020b806100326000396000f3006080604052600436106100565763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663715018a6811461005b5780638da5cb5b14610072578063f2fde38b146100a3575b600080fd5b34801561006757600080fd5b506100706100c4565b005b34801561007e57600080fd5b50610087610130565b60408051600160a060020a039092168252519081900360200190f35b3480156100af57600080fd5b50610070600160a060020a036004351661013f565b600054600160a060020a031633146100db57600080fd5b60008054604051600160a060020a03909116917ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482091a26000805473ffffffffffffffffffffffffffffffffffffffff19169055565b600054600160a060020a031681565b600054600160a060020a0316331461015657600080fd5b61015f81610162565b50565b600160a060020a038116151561017757600080fd5b60008054604051600160a060020a03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a36000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03929092169190911790555600a165627a7a72305820de50c6ba599edd0167ade6fae80fefaeb7e69b3ea610c223def38e97196ed1cd0029";
+    public static final String BINARY = "";
+
+    public static final String FUNC_OWNERPAYABLE = "ownerPayable";
 
     public static final String FUNC_RENOUNCEOWNERSHIP = "renounceOwnership";
 
     public static final String FUNC_OWNER = "owner";
 
-    public static final String FUNC_TRANSFEROWNERSHIP = "transferOwnership";
+    public static final String FUNC_ISOWNER = "isOwner";
 
-    public static final Event OWNERSHIPRENOUNCED_EVENT = new Event("OwnershipRenounced", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}));
-    ;
+    public static final String FUNC_TRANSFEROWNERSHIP = "transferOwnership";
 
     public static final Event OWNERSHIPTRANSFERRED_EVENT = new Event("OwnershipTransferred", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}));
@@ -67,7 +71,14 @@ public class Ownable extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public RemoteCall<TransactionReceipt> renounceOwnership() {
+    public RemoteFunctionCall<String> ownerPayable() {
+        final Function function = new Function(FUNC_OWNERPAYABLE, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> renounceOwnership() {
         final Function function = new Function(
                 FUNC_RENOUNCEOWNERSHIP, 
                 Arrays.<Type>asList(), 
@@ -75,50 +86,26 @@ public class Ownable extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteCall<String> owner() {
+    public RemoteFunctionCall<String> owner() {
         final Function function = new Function(FUNC_OWNER, 
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
-    public RemoteCall<TransactionReceipt> transferOwnership(String _newOwner) {
+    public RemoteFunctionCall<Boolean> isOwner() {
+        final Function function = new Function(FUNC_ISOWNER, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        return executeRemoteCallSingleValueReturn(function, Boolean.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> transferOwnership(String newOwner) {
         final Function function = new Function(
                 FUNC_TRANSFEROWNERSHIP, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_newOwner)), 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, newOwner)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
-    }
-
-    public List<OwnershipRenouncedEventResponse> getOwnershipRenouncedEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(OWNERSHIPRENOUNCED_EVENT, transactionReceipt);
-        ArrayList<OwnershipRenouncedEventResponse> responses = new ArrayList<OwnershipRenouncedEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
-            OwnershipRenouncedEventResponse typedResponse = new OwnershipRenouncedEventResponse();
-            typedResponse.log = eventValues.getLog();
-            typedResponse.previousOwner = (String) eventValues.getIndexedValues().get(0).getValue();
-            responses.add(typedResponse);
-        }
-        return responses;
-    }
-
-    public Flowable<OwnershipRenouncedEventResponse> ownershipRenouncedEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, OwnershipRenouncedEventResponse>() {
-            @Override
-            public OwnershipRenouncedEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(OWNERSHIPRENOUNCED_EVENT, log);
-                OwnershipRenouncedEventResponse typedResponse = new OwnershipRenouncedEventResponse();
-                typedResponse.log = log;
-                typedResponse.previousOwner = (String) eventValues.getIndexedValues().get(0).getValue();
-                return typedResponse;
-            }
-        });
-    }
-
-    public Flowable<OwnershipRenouncedEventResponse> ownershipRenouncedEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(OWNERSHIPRENOUNCED_EVENT));
-        return ownershipRenouncedEventFlowable(filter);
     }
 
     public List<OwnershipTransferredEventResponse> getOwnershipTransferredEvents(TransactionReceipt transactionReceipt) {
@@ -190,15 +177,7 @@ public class Ownable extends Contract {
         return deployRemoteCall(Ownable.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 
-    public static class OwnershipRenouncedEventResponse {
-        public Log log;
-
-        public String previousOwner;
-    }
-
-    public static class OwnershipTransferredEventResponse {
-        public Log log;
-
+    public static class OwnershipTransferredEventResponse extends BaseEventResponse {
         public String previousOwner;
 
         public String newOwner;

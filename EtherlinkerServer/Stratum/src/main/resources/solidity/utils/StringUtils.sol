@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
 /**
  * @title String Utils
@@ -11,7 +11,7 @@ contract StringUtils {
      * @param x bytes32 parameter
      * @return string representation of the input parameter
      */
-    function bytes32ToString(bytes32 x) public pure returns (string) {
+    function bytes32ToString(bytes32 x) public pure returns (string memory ) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
         for (uint j = 0; j < 32; j++) {
@@ -22,7 +22,7 @@ contract StringUtils {
             }
         }
         bytes memory bytesStringTrimmed = new bytes(charCount);
-        for (j = 0; j < charCount; j++) {
+        for (uint j = 0; j < charCount; j++) {
             bytesStringTrimmed[j] = bytesString[j];
         }
         return string(bytesStringTrimmed);
@@ -52,7 +52,7 @@ contract StringUtils {
      * @param v uint parameter
      * @return string representation of the input parameter
      */
-    function uintToString(uint v) public pure returns (string ret) {
+    function uintToString(uint v) public pure returns (string memory ret) {
         return bytes32ToString(uintToBytes(v));
     }
 

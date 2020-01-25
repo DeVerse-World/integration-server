@@ -60,7 +60,7 @@ public class DonationsContractTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_DonateToContract");
-        etherlinkerRequestData.setContractAddress("0x7f6e59834248fd21516ab62e344d9bf81b4f511d");
+        etherlinkerRequestData.setContractAddress("0xdb9b3cee990d64553e1455e46340b2368919f98b");
         etherlinkerRequestData.setContractMethodName("donate");
         etherlinkerRequestData.setContractName("com.academy.contracts.Donations");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -86,7 +86,7 @@ public class DonationsContractTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_CheckDonations");
-        etherlinkerRequestData.setContractAddress("0x7f6e59834248fd21516ab62e344d9bf81b4f511d");
+        etherlinkerRequestData.setContractAddress("0xdb9b3cee990d64553e1455e46340b2368919f98b");
         etherlinkerRequestData.setContractMethodName("checkDonations");
         etherlinkerRequestData.setContractName("com.academy.contracts.Donations");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -113,7 +113,7 @@ public class DonationsContractTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_withdrawFundsFromDonationsContract");
-        etherlinkerRequestData.setContractAddress("0x7f6e59834248fd21516ab62e344d9bf81b4f511d");
+        etherlinkerRequestData.setContractAddress("0xdb9b3cee990d64553e1455e46340b2368919f98b");
         etherlinkerRequestData.setContractMethodName("withdrawDonations");
         etherlinkerRequestData.setContractName("com.academy.contracts.Donations");
 

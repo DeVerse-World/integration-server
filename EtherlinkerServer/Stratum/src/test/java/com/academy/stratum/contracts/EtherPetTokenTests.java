@@ -61,7 +61,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_createFreeRandomEntity");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("createFreeRandomEntity");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -87,7 +87,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_buyRandomEntity");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("buyRandomEntity");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -115,7 +115,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_grantRandomEntity");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("grantRandomEntity");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -142,7 +142,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getAllEntityIdsForOwner");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("tokenIdsOfOwner");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -166,7 +166,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getEntityIdForOwnerByIndex");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("tokenOfOwnerByIndex");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -192,7 +192,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getEntityCountForOwner");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("balanceOf");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         etherlinkerRequestData.setConvertResultFromWeiToEth("false");
@@ -219,7 +219,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_checkEntityOwner");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("ownerOf");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -243,7 +243,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getEntityName");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("getEntityName");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -267,7 +267,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getEntityDNA");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("getEntityDNA");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -294,7 +294,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_withdrawFunds");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("withdrawFunds");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
 
@@ -315,7 +315,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_setRandomEntityPrice");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("setRandomEntityPrice");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         ArrayList<String> contractMethodParams = new ArrayList<>();
@@ -340,7 +340,7 @@ public class EtherPetTokenTests {
 
         EtherlinkerRequestData etherlinkerRequestData = EtherlinkerCoreTests.getEtherlinkerRequestData();
         etherlinkerRequestData.setSenderId("sender_getRandomEntityPrice");
-        etherlinkerRequestData.setContractAddress("0x4ffa33508a8d22a50f3158a280d716d47d0bdc8f");
+        etherlinkerRequestData.setContractAddress("0x0a15ff3a2a1ac18def9d4943e37aeb717cd5e2e9");
         etherlinkerRequestData.setContractMethodName("getRandomEntityPrice");
         etherlinkerRequestData.setContractName("com.academy.contracts.EtherPetToken");
         etherlinkerRequestData.setConvertResultFromWeiToEth("true");

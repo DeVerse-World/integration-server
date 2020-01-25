@@ -11,7 +11,7 @@ then
   read -rsp $'Press any key to continue...\n' -n1 key;
   exit
 fi
-if ! ./mvnw org.web3j:web3j-maven-plugin:4.1.0:generate-sources
+if ! ./mvnw org.web3j:web3j-maven-plugin:4.5.11:generate-sources
 then
   echo "Error during contracts compilation "
   read -rsp $'Press any key to continue...\n' -n1 key;

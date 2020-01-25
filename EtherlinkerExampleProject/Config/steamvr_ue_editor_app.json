@@ -1,0 +1,18 @@
+{
+	"source": "UE",
+	"applications": [
+		{
+			"app_key": "application.generated.ue.ethrelinker-for-ue4---example-project-10757647.ue4editor.exe",
+			"launch_type": "url",
+			"url": "steam://launch/",
+			"action_manifest_path": "G:/[Work]/Etherlinker for UE4/EtherlinkerExampleProject/Config/SteamVRBindings/steamvr_manifest.json",
+			"strings":
+			{
+				"en_us":
+				{
+					"name": "Ethrelinker for UE4 - Example Project-10757647 [UE Editor]"
+				}
+			}
+		}
+	]
+}

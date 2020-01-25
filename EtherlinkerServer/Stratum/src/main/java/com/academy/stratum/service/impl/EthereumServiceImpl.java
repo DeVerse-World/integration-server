@@ -66,6 +66,9 @@ public class EthereumServiceImpl implements EthereumService {
             LOG.error("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
             throw new RuntimeException("Infura URL is empty or incorrect. Get access URL from Infura (https://infura.io/) to be able to interact with Ethereum blockchain from integration server.");
         } else {
+            if (!URL.contains("https://")) {
+                URL = "https://" + URL;
+            }
             return Admin.build(new HttpService(URL));
         }
     }
@@ -84,6 +87,10 @@ public class EthereumServiceImpl implements EthereumService {
             }
 
             URL = etherlinkerRequestData.getInfuraURL();
+        }
+
+        if (!URL.contains("https://")) {
+            URL = "https://" + URL;
         }
 
         return URL;

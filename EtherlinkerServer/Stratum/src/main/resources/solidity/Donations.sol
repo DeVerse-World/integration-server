@@ -1,7 +1,7 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
-import "./utils/SafeMath.sol";
-import "./utils/Ownable.sol";
+import "./math/SafeMath.sol";
+import "./ownership/Ownable.sol";
 
 /**
  * @title Donations contract
@@ -22,7 +22,8 @@ contract Donations is Ownable {
      */
     function withdrawDonations() public onlyOwner {
         uint256 balance = address(this).balance;
-        owner.transfer(address(this).balance);
+        address payable ownerPayableAddress = ownerPayable();
+        ownerPayableAddress.transfer(address(this).balance);
         emit Withdrawn(balance);
     }
 

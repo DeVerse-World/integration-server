@@ -1,9 +1,9 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
-import "./utils/SafeMath.sol";
-import "./utils/Ownable.sol";
-import "./ERC721/ERC721Mintable.sol";
-import "./ERC721/ERC721Full.sol";
+import "./math/SafeMath.sol";
+import "./ownership/Ownable.sol";
+import "./token/ERC721/ERC721Mintable.sol";
+import "./token/ERC721/ERC721Full.sol";
 
 
 /**
@@ -41,7 +41,7 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
      * @param _entityId Entity Id
      * @return name of an entity
      */
-    function getEntityName(uint256 _entityId) public view returns(string) {
+    function getEntityName(uint256 _entityId) public view returns(string memory) {
 
        Entity memory _entity = entities[_entityId];
        return _entity.name;
@@ -62,7 +62,7 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
      * @dev Buy random entity
      * @param _name Entity Name
      */
-    function buyRandomEntity(string _name) external payable {
+    function buyRandomEntity(string calldata _name) external payable {
 
         // User should pay sufficient amount of funds and no more than that
         require(msg.value == randomEntityPrice);
@@ -79,7 +79,7 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
      * @param _entityOwner Entity Owner
      * @param _name Entity Name
      */
-    function grantRandomEntity(address _entityOwner, string _name) external onlyOwner {
+    function grantRandomEntity(address _entityOwner, string calldata _name) external onlyOwner {
 
         uint randDna = _generateRandomDna(_name);
         randDna = randDna - randDna % 100;
@@ -91,7 +91,7 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
      * @dev Create random entity, if sender doesn't have any entities
      * @param _name Entity Name
      */
-    function createFreeRandomEntity(string _name) external {
+    function createFreeRandomEntity(string calldata _name) external {
 
         // Only first entity is free
         require(balanceOf(msg.sender) == 0);
@@ -108,7 +108,7 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
      * @param _name Entity Name
      * @param _dna Entity DNA
      */
-    function _createEntity(address _entityOwner, string _name, uint256 _dna) internal {
+    function _createEntity(address _entityOwner, string memory _name, uint256 _dna) internal {
 
         uint entityId = entities.push(Entity(_name, _dna)) - 1;
 
@@ -122,8 +122,8 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
     * @param _name Entity Name
     * @return randomDNA Random DNA of a entity
     */
-    function _generateRandomDna(string _name) private view returns (uint256) {
-        uint256 rand = uint256(keccak256(_name));
+    function _generateRandomDna(string memory _name) private view returns (uint256) {
+        uint256 rand = uint256(keccak256(abi.encode(_name)));
         return rand % dnaModulus;
     }
 
@@ -148,7 +148,8 @@ contract EtherPetToken is ERC721, ERC721Enumerable, ERC721Mintable, Ownable {
      */
     function withdrawFunds() external onlyOwner {
         uint256 balance = address(this).balance;
-        owner.transfer(address(this).balance);
+        address payable ownerPayableAddress = ownerPayable();
+        ownerPayableAddress.transfer(address(this).balance);
         emit Withdrawn(balance);
     }
 

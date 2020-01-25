@@ -1,9 +1,15 @@
 package com.academy.contracts;
 
 import io.reactivex.Flowable;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
@@ -12,18 +18,14 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.RemoteFunctionCall;
 import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.BaseEventResponse;
 import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * <p>Auto generated code.
@@ -32,18 +34,23 @@ import java.util.List;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.1.0.
+ * <p>Generated with web3j version 4.5.11.
  */
+@SuppressWarnings("rawtypes")
 public class Donations extends Contract {
-    private static final String BINARY = "608060405260008054600160a060020a031916331790556103d3806100256000396000f3006080604052600436106100825763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166312065fe081146100875780632269ffa7146100ae578063715018a6146100cf5780638da5cb5b146100e6578063ce1b088a14610117578063ed88c68e1461012c578063f2fde38b14610134575b600080fd5b34801561009357600080fd5b5061009c610155565b60408051918252519081900360200190f35b3480156100ba57600080fd5b5061009c600160a060020a036004351661015a565b3480156100db57600080fd5b506100e4610175565b005b3480156100f257600080fd5b506100fb6101e1565b60408051600160a060020a039092168252519081900360200190f35b34801561012357600080fd5b506100e46101f0565b6100e4610280565b34801561014057600080fd5b506100e4600160a060020a03600435166102ee565b303190565b600160a060020a031660009081526001602052604090205490565b600054600160a060020a0316331461018c57600080fd5b60008054604051600160a060020a03909116917ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482091a26000805473ffffffffffffffffffffffffffffffffffffffff19169055565b600054600160a060020a031681565b60008054600160a060020a0316331461020857600080fd5b506000805460405130803193600160a060020a039390931692903180156108fc02929091818181858888f19350505050158015610249573d6000803e3d6000fd5b506040805182815290517f430648de173157e069201c943adb2d4e340e7cf5b27b1b09c9cb852f03d63b569181900360200190a150565b3360009081526001602052604090205434906102a2908263ffffffff61031116565b33600081815260016020908152604091829020939093558051848152905191927f2da466a7b24304f47e87fa2e1e5a81b9831ce54fec19055ce277ca2f39ba42c492918290030190a250565b600054600160a060020a0316331461030557600080fd5b61030e8161032a565b50565b60008282018381101561032357600080fd5b9392505050565b600160a060020a038116151561033f57600080fd5b60008054604051600160a060020a03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a36000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03929092169190911790555600a165627a7a72305820b2d338e0d2697a01926245bf0c6a28bbe2154bd798e6fe42efb2618a364107ef0029";
+    public static final String BINARY = "6080604052600061001461006360201b60201c565b600080546001600160a01b0319166001600160a01b0383169081178255604051929350917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350610067565b3390565b610606806100766000396000f3fe6080604052600436106100865760003560e01c80638da5cb5b116100595780638da5cb5b1461012d5780638f32d59b14610142578063ce1b088a1461016b578063ed88c68e14610180578063f2fde38b1461018857610086565b806312065fe01461008b5780632269ffa7146100b257806348b68140146100e5578063715018a614610116575b600080fd5b34801561009757600080fd5b506100a06101bb565b60408051918252519081900360200190f35b3480156100be57600080fd5b506100a0600480360360208110156100d557600080fd5b50356001600160a01b03166101c0565b3480156100f157600080fd5b506100fa6101db565b604080516001600160a01b039092168252519081900360200190f35b34801561012257600080fd5b5061012b610237565b005b34801561013957600080fd5b506100fa6102cb565b34801561014e57600080fd5b506101576102da565b604080519115158252519081900360200190f35b34801561017757600080fd5b5061012b6102fe565b61012b6103c5565b34801561019457600080fd5b5061012b600480360360208110156101ab57600080fd5b50356001600160a01b0316610433565b303190565b6001600160a01b031660009081526001602052604090205490565b60006101e56102da565b6102275760408051600160e51b62461bcd02815260206004820181905260248201526000805160206105bb833981519152604482015290519081900360640190fd5b506000546001600160a01b031690565b61023f6102da565b6102815760408051600160e51b62461bcd02815260206004820181905260248201526000805160206105bb833981519152604482015290519081900360640190fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000546001600160a01b031690565b600080546001600160a01b03166102ef610489565b6001600160a01b031614905090565b6103066102da565b6103485760408051600160e51b62461bcd02815260206004820181905260248201526000805160206105bb833981519152604482015290519081900360640190fd5b303160006103546101db565b6040519091506001600160a01b03821690303180156108fc02916000818181858888f1935050505015801561038d573d6000803e3d6000fd5b506040805183815290517f430648de173157e069201c943adb2d4e340e7cf5b27b1b09c9cb852f03d63b569181900360200190a15050565b3360009081526001602052604090205434906103e7908263ffffffff61048d16565b33600081815260016020908152604091829020939093558051848152905191927f2da466a7b24304f47e87fa2e1e5a81b9831ce54fec19055ce277ca2f39ba42c492918290030190a250565b61043b6102da565b61047d5760408051600160e51b62461bcd02815260206004820181905260248201526000805160206105bb833981519152604482015290519081900360640190fd5b610486816104f1565b50565b3390565b6000828201838110156104ea5760408051600160e51b62461bcd02815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b6001600160a01b03811661053957604051600160e51b62461bcd0281526004018080602001828103825260268152602001806105956026913960400191505060405180910390fd5b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b039290921691909117905556fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f20616464726573734f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572a165627a7a7230582034d82c581a74029a918f44b241c48ca1b4a8365743464b59487c0d5c7acc043d0029";
 
     public static final String FUNC_GETBALANCE = "getBalance";
 
     public static final String FUNC_CHECKDONATIONS = "checkDonations";
 
+    public static final String FUNC_OWNERPAYABLE = "ownerPayable";
+
     public static final String FUNC_RENOUNCEOWNERSHIP = "renounceOwnership";
 
     public static final String FUNC_OWNER = "owner";
+
+    public static final String FUNC_ISOWNER = "isOwner";
 
     public static final String FUNC_WITHDRAWDONATIONS = "withdrawDonations";
 
@@ -57,10 +64,6 @@ public class Donations extends Contract {
 
     public static final Event WITHDRAWN_EVENT = new Event("Withdrawn", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
-    ;
-
-    public static final Event OWNERSHIPRENOUNCED_EVENT = new Event("OwnershipRenounced", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}));
     ;
 
     public static final Event OWNERSHIPTRANSFERRED_EVENT = new Event("OwnershipTransferred", 
@@ -85,21 +88,28 @@ public class Donations extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public RemoteCall<BigInteger> getBalance() {
+    public RemoteFunctionCall<BigInteger> getBalance() {
         final Function function = new Function(FUNC_GETBALANCE, 
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteCall<BigInteger> checkDonations(String user) {
+    public RemoteFunctionCall<BigInteger> checkDonations(String user) {
         final Function function = new Function(FUNC_CHECKDONATIONS, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(user)), 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, user)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteCall<TransactionReceipt> renounceOwnership() {
+    public RemoteFunctionCall<String> ownerPayable() {
+        final Function function = new Function(FUNC_OWNERPAYABLE, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> renounceOwnership() {
         final Function function = new Function(
                 FUNC_RENOUNCEOWNERSHIP, 
                 Arrays.<Type>asList(), 
@@ -107,14 +117,21 @@ public class Donations extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteCall<String> owner() {
+    public RemoteFunctionCall<String> owner() {
         final Function function = new Function(FUNC_OWNER, 
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
-    public RemoteCall<TransactionReceipt> withdrawDonations() {
+    public RemoteFunctionCall<Boolean> isOwner() {
+        final Function function = new Function(FUNC_ISOWNER, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        return executeRemoteCallSingleValueReturn(function, Boolean.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> withdrawDonations() {
         final Function function = new Function(
                 FUNC_WITHDRAWDONATIONS, 
                 Arrays.<Type>asList(), 
@@ -122,7 +139,7 @@ public class Donations extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteCall<TransactionReceipt> donate(BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> donate(BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_DONATE, 
                 Arrays.<Type>asList(), 
@@ -130,10 +147,10 @@ public class Donations extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteCall<TransactionReceipt> transferOwnership(String _newOwner) {
+    public RemoteFunctionCall<TransactionReceipt> transferOwnership(String newOwner) {
         final Function function = new Function(
                 FUNC_TRANSFEROWNERSHIP, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_newOwner)), 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, newOwner)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -200,37 +217,6 @@ public class Donations extends Contract {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(WITHDRAWN_EVENT));
         return withdrawnEventFlowable(filter);
-    }
-
-    public List<OwnershipRenouncedEventResponse> getOwnershipRenouncedEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(OWNERSHIPRENOUNCED_EVENT, transactionReceipt);
-        ArrayList<OwnershipRenouncedEventResponse> responses = new ArrayList<OwnershipRenouncedEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
-            OwnershipRenouncedEventResponse typedResponse = new OwnershipRenouncedEventResponse();
-            typedResponse.log = eventValues.getLog();
-            typedResponse.previousOwner = (String) eventValues.getIndexedValues().get(0).getValue();
-            responses.add(typedResponse);
-        }
-        return responses;
-    }
-
-    public Flowable<OwnershipRenouncedEventResponse> ownershipRenouncedEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, OwnershipRenouncedEventResponse>() {
-            @Override
-            public OwnershipRenouncedEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(OWNERSHIPRENOUNCED_EVENT, log);
-                OwnershipRenouncedEventResponse typedResponse = new OwnershipRenouncedEventResponse();
-                typedResponse.log = log;
-                typedResponse.previousOwner = (String) eventValues.getIndexedValues().get(0).getValue();
-                return typedResponse;
-            }
-        });
-    }
-
-    public Flowable<OwnershipRenouncedEventResponse> ownershipRenouncedEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
-        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(OWNERSHIPRENOUNCED_EVENT));
-        return ownershipRenouncedEventFlowable(filter);
     }
 
     public List<OwnershipTransferredEventResponse> getOwnershipTransferredEvents(TransactionReceipt transactionReceipt) {
@@ -302,29 +288,17 @@ public class Donations extends Contract {
         return deployRemoteCall(Donations.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 
-    public static class DepositedEventResponse {
-        public Log log;
-
+    public static class DepositedEventResponse extends BaseEventResponse {
         public String payer;
 
         public BigInteger weiAmount;
     }
 
-    public static class WithdrawnEventResponse {
-        public Log log;
-
+    public static class WithdrawnEventResponse extends BaseEventResponse {
         public BigInteger weiAmount;
     }
 
-    public static class OwnershipRenouncedEventResponse {
-        public Log log;
-
-        public String previousOwner;
-    }
-
-    public static class OwnershipTransferredEventResponse {
-        public Log log;
-
+    public static class OwnershipTransferredEventResponse extends BaseEventResponse {
         public String previousOwner;
 
         public String newOwner;

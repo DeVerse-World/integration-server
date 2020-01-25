@@ -101,7 +101,7 @@ public class EtherlinkerCoreTests {
         }
     }
 
-    //@Ignore
+    @Ignore
     @SuppressWarnings("Duplicates")
     @Test
     public void deployContractTest() {

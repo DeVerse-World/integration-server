@@ -1,8 +1,8 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
-import "./utils/SafeMath.sol";
-import "./ERC20/ERC20Burnable.sol";
-import "./utils/Ownable.sol";
+import "./math/SafeMath.sol";
+import "./token/ERC20/ERC20Burnable.sol";
+import "./ownership/Ownable.sol";
 import "./utils/StringUtils.sol";
 
 /**
@@ -45,7 +45,7 @@ contract PremiumItemToken is ERC20Burnable, Ownable {
      * @param _itemIds Ids of the new items
      * @param _itemPrices Prices of the new items
      */
-    function batchAddPremiumItems(uint256[] _itemIds, uint256[] _itemPrices) external onlyOwner {
+    function batchAddPremiumItems(uint256[] calldata _itemIds, uint256[] calldata _itemPrices) external onlyOwner {
 
         require(_itemIds.length == _itemPrices.length);
 
@@ -73,7 +73,7 @@ contract PremiumItemToken is ERC20Burnable, Ownable {
      * @param _itemIds Ids of the existing items
      * @param _itemPrices Prices of the existing items to change
      */
-    function batchEditPremiumItems(uint256[] _itemIds, uint256[] _itemPrices) external onlyOwner {
+    function batchEditPremiumItems(uint256[] calldata _itemIds, uint256[] calldata _itemPrices) external onlyOwner {
 
         require(_itemIds.length == _itemPrices.length);
 
@@ -98,7 +98,7 @@ contract PremiumItemToken is ERC20Burnable, Ownable {
      * @dev Delete existing premium items in batch
      * @param _itemIds Ids of the items, which should be deleted
      */
-    function batchDeletePremiumItems(uint256[] _itemIds) external onlyOwner {
+    function batchDeletePremiumItems(uint256[] calldata _itemIds) external onlyOwner {
         for (uint i=0; i<_itemIds.length; i++) {
             delete premiumItems[_itemIds[i]];
             emit DeletePremiumItemEvent(_itemIds[i]);
