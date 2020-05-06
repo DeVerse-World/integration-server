@@ -11,7 +11,7 @@ UEtherlinkerRemoteWalletManager::UEtherlinkerRemoteWalletManager()
 
 void UEtherlinkerRemoteWalletManager::GetWalletData(FWalletAuthenticationRequest walletAuthenticationRequest)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerGetWalletData(walletAuthenticationRequest);
 		return;
 	}
@@ -36,7 +36,7 @@ bool UEtherlinkerRemoteWalletManager::ServerGetWalletData_Validate(FWalletAuthen
 
 void UEtherlinkerRemoteWalletManager::CreateUserAccount(FWalletAuthenticationRequest walletAuthenticationRequest)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerCreateUserAccount(walletAuthenticationRequest);
 		return;
 	}

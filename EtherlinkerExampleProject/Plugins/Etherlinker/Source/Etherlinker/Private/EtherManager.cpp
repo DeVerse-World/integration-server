@@ -10,7 +10,7 @@ UEtherManager::UEtherManager()
 
 void UEtherManager::GetWalletBalance(FEtherlinkerRequestData etherlinkerRequestData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerGetWalletBalance(etherlinkerRequestData);
 		return;
 	}
@@ -35,7 +35,7 @@ bool UEtherManager::ServerGetWalletBalance_Validate(FEtherlinkerRequestData ethe
 
 void UEtherManager::TransferEther(FEtherlinkerRequestData etherlinkerRequestData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerTransferEther(etherlinkerRequestData);
 		return;
 	}
@@ -62,7 +62,7 @@ bool UEtherManager::ServerTransferEther_Validate(FEtherlinkerRequestData etherli
 
 void UEtherManager::ExecContractMethod(FEtherlinkerRequestData etherlinkerRequestData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerExecContractMethod(etherlinkerRequestData);
 		return;
 	}
@@ -88,7 +88,7 @@ bool UEtherManager::ServerExecContractMethod_Validate(FEtherlinkerRequestData et
 
 void UEtherManager::DeployContract(FEtherlinkerRequestData etherlinkerRequestData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerDeployContract(etherlinkerRequestData);
 		return;
 	}
@@ -113,7 +113,7 @@ bool UEtherManager::ServerDeployContract_Validate(FEtherlinkerRequestData etherl
 
 void UEtherManager::CreateWallet(FEtherlinkerRequestData etherlinkerRequestData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerCreateWallet(etherlinkerRequestData);
 		return;
 	}
@@ -139,7 +139,7 @@ bool UEtherManager::ServerCreateWallet_Validate(FEtherlinkerRequestData etherlin
 
 void UEtherManager::SetWalletData(FWalletData newWalletData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerSetWalletData(newWalletData);
 		return;
 	}
@@ -159,7 +159,7 @@ bool UEtherManager::ServerSetWalletData_Validate(FWalletData newWalletData)
 
 void UEtherManager::ProcessBatchRequest(FEtherlinkerBatchRequestData etherlinkerBatchRequestData)
 {
-	if (GetOwner()->Role < ROLE_Authority) {
+	if (GetOwner()->GetLocalRole() < ROLE_Authority) {
 		ServerProcessBatchRequest(etherlinkerBatchRequestData);
 		return;
 	}

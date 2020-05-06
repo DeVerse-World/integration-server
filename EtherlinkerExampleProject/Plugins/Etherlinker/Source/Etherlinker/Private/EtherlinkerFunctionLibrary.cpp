@@ -548,9 +548,18 @@ bool UEtherlinkerFunctionLibrary::CheckVRPreviewOrGameActive()
 #if WITH_EDITOR
 	if (GIsEditor)
 	{
-
-		UEditorEngine* EdEngine = Cast<UEditorEngine>(GEngine);
-		return EdEngine->bUseVRPreviewForPlayWorld;
+		if (UEditorEngine* EdEngine = Cast<UEditorEngine>(GEngine))
+		{
+			TOptional<FPlayInEditorSessionInfo> PlayInfo = EdEngine->GetPlayInEditorSessionInfo();
+			if (PlayInfo.IsSet())
+			{
+				return PlayInfo->OriginalRequestParams.SessionPreviewTypeOverride == EPlaySessionPreviewType::VRPreview;
+			}
+			else
+			{
+				return false;
+			}
+		}
 	}
 #endif
 
