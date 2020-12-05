@@ -98,7 +98,7 @@ bool UEtherlinkerRemoteWalletManager::MakeRequest(FWalletAuthenticationRequest W
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *OutputString);
 #endif
 
-	TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("POST");
 
 	HttpRequest->SetHeader(TEXT("User-Agent"), "X-UnrealEngine-Agent");
