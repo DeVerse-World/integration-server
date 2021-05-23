@@ -1,6 +1,7 @@
 package com.academy.contracts;
 
 import io.reactivex.Flowable;
+import io.reactivex.functions.Function;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +12,6 @@ import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.Event;
-import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
@@ -33,7 +33,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.5.11.
+ * <p>Generated with web3j version 4.8.4.
  */
 @SuppressWarnings("rawtypes")
 public class MinterRole extends Contract {
@@ -41,9 +41,9 @@ public class MinterRole extends Contract {
 
     public static final String FUNC_ADDMINTER = "addMinter";
 
-    public static final String FUNC_RENOUNCEMINTER = "renounceMinter";
-
     public static final String FUNC_ISMINTER = "isMinter";
+
+    public static final String FUNC_RENOUNCEMINTER = "renounceMinter";
 
     public static final Event MINTERADDED_EVENT = new Event("MinterAdded", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}));
@@ -71,29 +71,6 @@ public class MinterRole extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> addMinter(String account) {
-        final Function function = new Function(
-                FUNC_ADDMINTER, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, account)), 
-                Collections.<TypeReference<?>>emptyList());
-        return executeRemoteCallTransaction(function);
-    }
-
-    public RemoteFunctionCall<TransactionReceipt> renounceMinter() {
-        final Function function = new Function(
-                FUNC_RENOUNCEMINTER, 
-                Arrays.<Type>asList(), 
-                Collections.<TypeReference<?>>emptyList());
-        return executeRemoteCallTransaction(function);
-    }
-
-    public RemoteFunctionCall<Boolean> isMinter(String account) {
-        final Function function = new Function(FUNC_ISMINTER, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, account)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
-        return executeRemoteCallSingleValueReturn(function, Boolean.class);
-    }
-
     public List<MinterAddedEventResponse> getMinterAddedEvents(TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(MINTERADDED_EVENT, transactionReceipt);
         ArrayList<MinterAddedEventResponse> responses = new ArrayList<MinterAddedEventResponse>(valueList.size());
@@ -107,7 +84,7 @@ public class MinterRole extends Contract {
     }
 
     public Flowable<MinterAddedEventResponse> minterAddedEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, MinterAddedEventResponse>() {
+        return web3j.ethLogFlowable(filter).map(new Function<Log, MinterAddedEventResponse>() {
             @Override
             public MinterAddedEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(MINTERADDED_EVENT, log);
@@ -138,7 +115,7 @@ public class MinterRole extends Contract {
     }
 
     public Flowable<MinterRemovedEventResponse> minterRemovedEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<Log, MinterRemovedEventResponse>() {
+        return web3j.ethLogFlowable(filter).map(new Function<Log, MinterRemovedEventResponse>() {
             @Override
             public MinterRemovedEventResponse apply(Log log) {
                 Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(MINTERREMOVED_EVENT, log);
@@ -154,6 +131,29 @@ public class MinterRole extends Contract {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(MINTERREMOVED_EVENT));
         return minterRemovedEventFlowable(filter);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> addMinter(String account) {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+                FUNC_ADDMINTER, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, account)), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
+    }
+
+    public RemoteFunctionCall<Boolean> isMinter(String account) {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_ISMINTER, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, account)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        return executeRemoteCallSingleValueReturn(function, Boolean.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> renounceMinter() {
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+                FUNC_RENOUNCEMINTER, 
+                Arrays.<Type>asList(), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
     }
 
     @Deprecated
