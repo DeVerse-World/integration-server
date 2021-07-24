@@ -90,4 +90,4 @@ It's also possible to use both local and remote server in one application by spe
 
 **Supported platforms:** Windows, Mac, Android, iOS  
 **Supported engine versions:** 4.20 - 4.26  
-**Supported solidity versions:** up to 0.5. Higher versions not yet supported until web3j maven plugin will be updated.
+**Supported solidity versions:** up to 0.7. Higher versions not yet supported until web3j maven plugin will be updated.
