@@ -89,5 +89,5 @@ If you have remote integration server, then you should securely transfer wallet 
 It's also possible to use both local and remote server in one application by specifying different server address for different purposes. For example, do all operations with funds on a local server, but execute some read-only contract methods on the server side.
 
 **Supported platforms:** Windows, Mac, Android, iOS  
-**Supported engine versions:** 4.20 - 4.26  
+**Supported engine versions:** 4.20 - 4.27  
 **Supported solidity versions:** up to 0.7. Higher versions not yet supported until web3j maven plugin will be updated.
